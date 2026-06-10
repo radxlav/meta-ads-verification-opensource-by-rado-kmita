@@ -1,0 +1,741 @@
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__CLIENT__ — Meta Ads Simple Dash</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hyperformula@2.6.2/dist/hyperformula.full.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@13.1.0/dist/handsontable.full.min.css">
+<script src="https://cdn.jsdelivr.net/npm/handsontable@13.1.0/dist/handsontable.full.min.js"></script>
+<style>
+:root{--coral:#e85d5d;--coral2:#f08080;--cream:#f5efe6;--dark:#1a1a1a;--mid:#444;--muted:#888;--border:#e5e0d8;--green-bg:#eafaf1;--r:12px;--sh:0 2px 12px rgba(0,0,0,.07)}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark)}
+header{background:var(--dark);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.logo{background:var(--coral);color:#fff;font-weight:800;font-size:12px;padding:3px 9px;border-radius:5px}
+.h-title{font-size:16px;font-weight:700;margin-left:10px}.h-sub{font-size:12px;color:#aaa;margin-left:8px}
+.h-right{text-align:right;font-size:11px;color:#aaa}.h-right strong{color:#f5a0a0;display:block}
+.tabs{background:#fff;border-bottom:1px solid var(--border);padding:0 16px;display:flex;gap:2px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+.tab{padding:11px 13px;font-size:12px;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer}
+.tab:hover{color:var(--coral)}.tab.active{color:var(--coral);border-bottom-color:var(--coral)}
+main{max-width:100%;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.card-hdr{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.card-ttl{font-size:14px;font-weight:700}.card-hdr .sub{font-size:11px;color:var(--muted)}
+.tbl-scroll{max-height:74vh;overflow:auto}
+table.dt{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}
+table.dt th{text-align:right;padding:7px 9px;font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);background:#faf8f5;border-bottom:1px solid var(--border);position:sticky;top:0;cursor:pointer}
+table.dt th.l,table.dt td.l{text-align:left}
+table.dt td{padding:6px 9px;border-bottom:1px solid #f0ece6;text-align:right;font-variant-numeric:tabular-nums}
+table.dt tr:hover td{background:#fdfaf7}
+.tr-total td{font-weight:700;background:#fdf5f5;border-top:2px solid var(--coral2);position:sticky;bottom:0}
+.qa-link{font-size:11px;font-weight:700;color:var(--coral);text-decoration:none}
+.note{font-size:11px;color:var(--muted);padding:10px 18px}
+details.exp{margin:0}
+details.exp>summary{cursor:pointer;font-size:10px;color:var(--coral);font-weight:600;list-style:none;user-select:none;display:inline-flex;align-items:center;gap:4px}
+details.exp>summary::-webkit-details-marker{display:none}
+details.exp>summary::before{content:'▸';color:var(--muted);font-size:9px}
+details.exp[open]>summary::before{content:'▾'}
+details.exp>summary:hover{text-decoration:underline}
+details.exp .exp-body{margin-top:5px;font-weight:400;color:var(--muted)}
+.idx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:16px 18px}
+.idx-card{display:flex;flex-direction:column;gap:5px;text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;font-family:inherit;transition:transform .16s cubic-bezier(.2,.8,.2,1),box-shadow .16s,border-color .16s}
+.idx-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(232,93,93,.13);border-color:var(--coral2)}
+.idx-card:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+.idx-t{font-size:13px;font-weight:700;color:var(--dark)}
+.idx-d{font-size:11px;color:var(--muted);line-height:1.45}
+.fx-bar{display:flex;align-items:center;gap:8px;padding:6px 16px;background:#fbf8f3;border-bottom:1px solid var(--border)}
+.fx-bar .fx-lbl{font-family:Georgia,serif;font-style:italic;font-weight:700;color:var(--coral);font-size:13px}
+.fx-bar .fx-cell{font-size:10px;font-weight:700;color:var(--mid);min-width:130px}
+.fx-input{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#fff;color:#555;outline:none}
+.fx-input.isformula{color:#16794a;font-weight:600}
+.card{transition:box-shadow .16s cubic-bezier(.2,.8,.2,1)}
+.tab,.attrbtn,.sheet-btn,.gs-tab,.qa-link,.cell-lnk{transition:all .15s cubic-bezier(.2,.8,.2,1)}
+.tab:focus-visible,.attrbtn:focus-visible,button:focus-visible{outline:2px solid var(--coral);outline-offset:1px}
+table.dt td,table.dt th{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.src{font-size:10px;color:var(--muted);text-align:center;padding:12px}
+
+.sheet-bar{padding:9px 16px;border-bottom:1px solid var(--border);background:#fdfbf9;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sheet-btn{font-size:10px;font-weight:600;padding:4px 9px;border-radius:5px;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--mid)}
+.sheet-btn:hover{border-color:var(--coral)}
+.sheet-btn.active{background:var(--coral);color:#fff;border-color:var(--coral)}
+.sheet-btn.ph{color:#b3a89a;font-style:italic}
+.sheet-act{font-size:10px;font-weight:600;padding:4px 9px;border-radius:5px;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--mid)}
+.sh-pane{display:none}.sh-pane.active{display:block}
+.hot-host{height:60vh;overflow:hidden;border-bottom:1px solid var(--border)}
+.ph-pane{padding:40px 24px;text-align:center;color:var(--muted);font-size:13px}
+.ph-pane b{color:var(--coral)}
+.gs-tabbar{display:flex;align-items:center;background:#f3eee2;border-top:1px solid var(--border);padding:0 8px;flex-wrap:wrap;min-height:30px}
+.gs-tab{background:transparent;border:0;border-right:1px solid var(--border);font-size:10.5px;font-weight:600;color:var(--mid);padding:6px 11px;cursor:pointer;border-top:2px solid transparent}
+.gs-tab:hover{background:#ebe5d5}.gs-tab.active{background:#fff;color:var(--dark);border-top-color:var(--coral)}
+.gs-tab.ph{color:#b3a89a;font-style:italic}
+.cmt{font-size:10px;color:#6b5b00;background:#fffbe6;border-left:3px solid #f0c000;padding:3px 7px;border-radius:3px;display:block;max-width:320px;white-space:normal;margin-top:3px}
+.cell-lnk{font-size:10px;font-weight:700;color:#2563eb;text-decoration:none;white-space:nowrap;cursor:pointer}
+.cell-lnk:hover{text-decoration:underline}
+tr.flash td{animation:flashrow 2.2s ease-out}
+@keyframes flashrow{0%{background:#fff3cd}60%{background:#fff3cd}100%{background:transparent}}
+#chart-tip{position:fixed;display:none;pointer-events:none;z-index:9999;background:#1a1a1a;color:#fff;font-size:11px;font-weight:500;padding:6px 10px;border-radius:7px;box-shadow:0 3px 14px rgba(0,0,0,.28);max-width:300px;line-height:1.45;white-space:pre-line}
+svg rect,svg circle{cursor:crosshair}
+.attrbar{background:#1a1a1a;border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.attrbar .albl{font-size:11px;color:#bbb;font-weight:600;margin-right:4px}
+.attrbtn{font-size:11px;font-weight:700;padding:5px 13px;border-radius:6px;cursor:pointer;border:1px solid #444;background:#262626;color:#ddd}
+.attrbtn:hover{border-color:var(--coral)}
+.attrbtn.on{background:var(--coral);color:#fff;border-color:var(--coral)}
+.attrbar .asum{margin-left:auto;font-size:11px;color:#ccc}.attrbar .asum b{color:#f5a0a0}
+.pos{color:#16794a;font-weight:700}.neg{color:#c0392b;font-weight:700}.warnv{color:#b8860b;font-weight:700}
+.st-ok{background:#eafaf1;color:#16794a;font-weight:700;border-radius:4px;padding:1px 5px}
+.st-warn{background:#fff6e6;color:#b8860b;font-weight:700;border-radius:4px;padding:1px 5px}
+.st-todo{background:#eef2ff;color:#3949ab;font-weight:700;border-radius:4px;padding:1px 5px}
+.st-no{background:#fdecea;color:#c0392b;font-weight:700;border-radius:4px;padding:1px 5px}
+.attr-card{margin-bottom:14px}
+.attr-grid th.win{text-align:center;border-left:1px solid var(--border)}
+.score-hero{display:flex;align-items:center;gap:22px;padding:22px;flex-wrap:wrap}
+.score-big{font-size:54px;font-weight:800;color:var(--coral);line-height:1}
+.score-sub{font-size:12px;color:var(--mid);max-width:640px}
+.score-bar{height:9px;background:#eee;border-radius:5px;overflow:hidden;width:120px;margin-top:5px}
+.score-bar i{display:block;height:100%;background:var(--coral)}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:16px 18px}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.kpi .lab{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
+.kpi .val{font-size:23px;font-weight:800;margin:4px 0 2px}
+.kpi .src{font-size:9.5px;color:var(--muted);text-align:left;padding:0}
+.sig{display:flex;gap:9px;align-items:flex-start;padding:9px 18px;border-top:1px solid #f0ece6}
+.sig .dot{font-size:13px;line-height:1.3}
+.sig .txt{font-size:12px}.sig .txt b{color:var(--dark)}
+.prov th,.prov td{font-size:10.5px}
+.tag-p{background:#e7f0ff;color:#1d4ed8;font-weight:700;border-radius:3px;padding:1px 4px;font-size:9px}
+.tag-s{background:#fdecea;color:#c0392b;font-weight:700;border-radius:3px;padding:1px 4px;font-size:9px}
+.tag-c{background:#eafaf1;color:#16794a;font-weight:700;border-radius:3px;padding:1px 4px;font-size:9px}
+.how{background:#f0f7ff;border-left:3px solid #2563eb;padding:8px 12px;font-size:11px;color:#274690;border-radius:0 4px 4px 0;margin:0 0 0 0}
+
+</style></head><body>
+<header><div style="display:flex;align-items:center;flex-wrap:wrap"><span class="h-title">__AGENCY__ × __CLIENT__</span><span class="h-sub">Meta Ads — Simple Dash</span></div>
+<div class="h-right"><strong>waluta __CURRENCY__ · konto __CLIENT__</strong>__PERIOD__ · ad-level · Dataslayer read-only · 3 okna atrybucji · 2026-06-09</div></header>
+<div class="attrbar" id="attrbar"></div>
+<div class="tabs" id="tabs"></div>
+<main id="main"></main>
+<script>
+const DATA=/*__INJECT_DATA__ : {'7dc1dv':W} lub {'1dc':W,'7dc':W,'7dc1dv':W}, W={craw,lut,month,tm,lm,camp,adset} (build-data.py). Meta-MCP-only? Wstaw jedyne okno (domyślne konta) pod '7dc1dv'. __*/{};const WINS=['1dc','7dc','7dc1dv'].filter(w=>DATA[w]&&DATA[w].month&&DATA[w].month.length);let ATTR_MODE=WINS.includes('7dc1dv')?'7dc1dv':(WINS[0]||'7dc1dv');const EMPTY_W={craw:[],lut:{yms:[],yws:[],dates:[],camps:[],adsets:[],ads:[]},month:[],tm:[],lm:[],camp:[],adset:[]};let D=DATA[ATTR_MODE]||EMPTY_W;
+const YMS=(D.month||[]).map(r=>r.ym).slice().sort();const YM_CUR=YMS[YMS.length-1]||'',YM_PREV=YMS[YMS.length-2]||YMS[0]||''; const CHECK=/*__INJECT_CHECK__ : [[mtg,action,owner,status,dowod,jak,link],…] (checklist-starter.md) __*/[];
+const PLM={'01':'styczeń','02':'luty','03':'marzec','04':'kwiecień','05':'maj','06':'czerwiec','07':'lipiec','08':'sierpień','09':'wrzesień','10':'październik','11':'listopad','12':'grudzień'};
+function ymPL(ym){const p=String(ym).split('|');return p.length>1?(PLM[p[1]]||p[1])+' '+p[0]:String(ym);}
+const fN=v=>v==null?'':Math.round(v).toLocaleString('pl-PL');
+const f2=v=>v==null?'':v.toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fZ=v=>fN(v)+' zł'; const fP=v=>(v*100).toFixed(2)+'%';
+const TABS=[
+ {id:'overview',label:'📑 Index i źródła danych'},
+ {id:'camp',label:'Rollup KAMPANIE'},
+ {id:'adset',label:'Rollup ADSETY'},
+ {id:'total',label:'FBA TOTAL'},
+ {id:'tm',label:'FBA TM (bieżący)'},
+ {id:'lm',label:'FBA LM (poprzedni)'},
+ {id:'tm_raw',label:'RAW TM (bieżący)'},
+ {id:'lm_raw',label:'RAW LM (poprzedni)'},
+ {id:'rawfull',label:'RAW pełne'},
+ {id:'bpl',label:'🔬 Placement'},
+ {id:'bage',label:'🔬 Wiek'},
+ {id:'check',label:'✔ Checklist'},
+ {id:'sheet',label:"<svg width='12' height='12' viewBox='0 0 24 24' style='vertical-align:-2px;margin-right:3px'><rect x='4' y='2' width='16' height='20' rx='2' fill='#0F9D58'/><g stroke='#fff' stroke-width='1.3' fill='none'><path d='M8 8h8M8 12h8M8 16h8M12 7v10'/></g></svg>Arkusz"},
+];
+let active='overview';
+let flt='';
+let srt={k:null,d:1};
+let chrt={vis:false,type:'bar',metric:'cost',by:'camp',x:'yw',ov:'roas'};
+const ROAS_T=6, FREQ_T=4;
+const ATTR=[{k:'1dc',l:'1d click'},{k:'7dc',l:'7d click'},{k:'7dc1dv',l:'7d click + 1d view'}];
+const ATTR_HAS={'7dc1dv':true,'7dc':true,'1dc':true};
+// Breakdowny z Meta API (account-default attribution, 2026-05-01..06-09) — NIE per okno, osobne pulle
+const BREAKDOWNS=/*__INJECT_BREAKDOWNS__ : {freq,placement,age} __*/{freq:{frequency:0,reach:0}};
+const BRK=/*__INJECT_BRK__ : {placement:{daily,roll},age:{daily,roll}} __*/{};
+function colRoas(v){if(v==null||!v)return'';return v>=ROAS_T?'pos':(v>=ROAS_T/2?'warnv':'neg');}
+function colDelta(d){return d==null?'':(d>0?'pos':(d<0?'neg':''));}
+function pmDelta(d){if(d==null||!isFinite(d))return'';const s=d>0?'+':'';return `${s}${(d*100).toFixed(1)}%`;}
+// checklist -> komentarz Huberta + deep-link do komorki arkusza  {s:sheetId, r:dataRow, c:colIdx, note}
+const CMAP=/*__INJECT_CMAP__ : {checklistIdx:{s:sheetKey,r:row,c:col,note:'komentarz z LICZBĄ klienta'}} — wypełnij po buildzie (deep-linki ↗ komórka) __*/{};
+
+const MDEF=[
+ {k:'cost',l:'Koszt'},{k:'pur',l:'Zakupy'},{k:'val',l:'Wartość'},
+ {k:'impr',l:'Impr'},{k:'clicks',l:'Link kl.'},{k:'atc',l:'ATC'},{k:'roas',l:'ROAS'}
+];
+function decodeRaw(rows,lut){
+ const L=lut||D.lut;
+ return rows.map(r=>({ym:L.yms[r[0]],yw:L.yws[r[1]],date:L.dates[r[2]],camp:L.camps[r[3]],adset:L.adsets[r[4]],ad:L.ads[r[5]],
+  cost:r[6],reach:r[7],impr:r[8],clicks:r[9],oc:r[10],lpv:r[11],cv:r[12],atc:r[13],ic:r[14],pur:r[15],val:r[16],api:r[17]}));
+}
+function tmRaw(){return decodeRaw(D.craw.filter(r=>D.lut.yms[r[0]]===YM_CUR));}
+function lmRaw(){return decodeRaw(D.craw.filter(r=>D.lut.yms[r[0]]===YM_PREV));}
+function filterRows(rows){
+ if(!flt)return rows;
+ const t=flt.toLowerCase();
+ return rows.filter(r=>Object.values(r).some(v=>String(v||'').toLowerCase().includes(t)));
+}
+function sortRows(rows){
+ if(!srt.k)return rows;
+ return [...rows].sort((a,b)=>{
+  const va=a[srt.k],vb=b[srt.k];
+  if(typeof va==='number')return(va-vb)*srt.d;
+  return String(va||'').localeCompare(String(vb||''))*srt.d;
+ });
+}
+function sortBy(k){if(srt.k===k)srt.d*=-1;else{srt.k=k;srt.d=1;}draw();}
+// ===== silnik wykresow v2 — parser naming convention + slupki/trend/stacked100 =====
+function parseTags(s){s=String(s||'');const kv={},flags=[];(s.match(/\[[^\]]*\]/g)||[]).forEach(t=>{const inn=t.slice(1,-1);const c=inn.indexOf(':');if(c>0){const k=inn.slice(0,c).trim();if(!(k in kv))kv[k]=inn.slice(c+1).trim();}else if(inn.trim())flags.push(inn.trim());});return{kv,flags};}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function cleanLabel(s){const p=parseTags(s);const parts=[...Object.values(p.kv),...p.flags];const j=parts.join('·');return (j||String(s||'')).slice(0,32);}
+let TAGDIMS=null;
+function detectTagDims(){if(TAGDIMS)return TAGDIMS;const seen={};[...D.lut.camps,...D.lut.adsets,...D.lut.ads].forEach(n=>{const kv=parseTags(n).kv;for(const k in kv)seen[k]=(seen[k]||0)+1;});const order=['R','C','A','B','T','G','P','AD','CR'];TAGDIMS=Object.keys(seen).sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib);}).map(k=>({key:'tag:'+k,label:'Tag '+k}));return TAGDIMS;}
+function tagFull(r){return (r.camp||'')+' '+(r.adset||'')+' '+(r.ad||'');}
+function dimValue(r,by){
+ if(by==='date')return r.date||'';if(by==='yw')return r.yw||'';if(by==='ym')return r.ym||'';
+ if(by==='camp')return r.camp||'(brak)';if(by==='adset')return r.adset||'(brak)';
+ if(by==='strat'){const f=tagFull(r).toUpperCase();if(f.includes('RTRG'))return 'RTRG · remarketing';if(f.includes('PROS'))return 'PROS · prospecting';if(f.includes('.MIX')||f.includes('(MIX'))return 'MIX';return 'Inne';}
+ if(by==='seg')return r.seg||'(brak)';
+ if(by.indexOf('tag:')===0)return parseTags(tagFull(r)).kv[by.slice(4)]||'(brak)';
+ return '(brak)';
+}
+const FLDS=['cost','val','pur','impr','clicks','atc','ic','reach'];
+function metricVal(o,m){return m==='roas'?(o.cost>0?o.val/o.cost:0):(o[m]||0);}
+function fmtMetric(v,m){return m==='roas'?v.toFixed(2):(m==='cost'||m==='val'?fN(v)+' zł':fN(v));}
+const PALETTE=['#e85d5d','#f0a04b','#5b8def','#3fb98c','#9b6dd6','#e0c341','#8a8f99','#d96fa6'];
+function groupBy(rows,by){const m={};rows.forEach(r=>{const k=dimValue(r,by)||'(brak)';if(!m[k]){m[k]={};FLDS.forEach(f=>m[k][f]=0);}FLDS.forEach(f=>m[k][f]+=(r[f]||0));});return m;}
+// kept for back-compat (rollup chart prev caller)
+function aggBy(rows,by){const m=groupBy(rows,by);const a=Object.keys(m).map(k=>Object.assign({_k:k},m[k]));a.forEach(g=>g.roas=g.cost>0?g.val/g.cost:0);return a.sort((x,y)=>(y.cost||0)-(x.cost||0));}
+function svgBarH(rows,by,metric){
+ const m=groupBy(rows,by);let arr=Object.keys(m).map(k=>({k,v:metricVal(m[k],metric)}));
+ arr=arr.filter(x=>metric==='roas'?x.v>0:x.v>0);arr.sort((a,b)=>b.v-a.v);arr=arr.slice(0,15);
+ if(!arr.length)return '<p style="padding:12px;font-size:12px;color:var(--muted)">Brak danych</p>';
+ const isCat=(by==='date'||by==='yw'||by==='ym'||by==='strat'||by.indexOf('tag:')===0);
+ const maxV=Math.max(...arr.map(x=>x.v),1e-9);
+ const BH=24,GAP=5,PL=210,PR=78,PT=8,W=940,H=PT+arr.length*(BH+GAP)+4;
+ let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:1040px;height:auto;display:block;margin:0 auto">`;
+ arr.forEach((x,i)=>{const bw=Math.max(2,(x.v/maxV)*(W-PL-PR));const y=PT+i*(BH+GAP);
+  const lbl=(isCat?String(x.k):cleanLabel(x.k)).slice(0,34);const vf=fmtMetric(x.v,metric);
+  s+=`<rect x="${PL}" y="${y}" width="${bw.toFixed(1)}" height="${BH}" fill="#e85d5d" rx="3" opacity="0.82"><title>${esc(x.k)}: ${vf}</title></rect>`;
+  s+=`<text x="${PL-5}" y="${(y+BH*0.67).toFixed(1)}" text-anchor="end" font-size="9.5" fill="#555">${esc(lbl)}</text>`;
+  s+=`<text x="${(PL+bw+5).toFixed(1)}" y="${(y+BH*0.67).toFixed(1)}" font-size="9" fill="#888">${vf}</text>`;});
+ return s+'</svg>';
+}
+function timeSeries(rows,xKey,byDim,metric){
+ const cells={},totals={};
+ rows.forEach(r=>{const x=dimValue(r,xKey),nm=dimValue(r,byDim);if(!x)return;
+  cells[x]=cells[x]||{};cells[x][nm]=cells[x][nm]||{};FLDS.forEach(f=>cells[x][nm][f]=(cells[x][nm][f]||0)+(r[f]||0));
+  totals[nm]=totals[nm]||{};FLDS.forEach(f=>totals[nm][f]=(totals[nm][f]||0)+(r[f]||0));});
+ const xs=Object.keys(cells).sort();
+ let names=Object.keys(totals).sort((a,b)=>metricVal(totals[b],metric)-metricVal(totals[a],metric));
+ const TOP=7,keep=names.slice(0,TOP),rest=names.slice(TOP);
+ const matrix={};xs.forEach(x=>{matrix[x]={};keep.forEach(nm=>matrix[x][nm]=cells[x][nm]?metricVal(cells[x][nm],metric):0);
+  if(rest.length){let ro=0;rest.forEach(nm=>{if(cells[x][nm])ro+=metricVal(cells[x][nm],metric);});matrix[x]['Pozostałe']=ro;}});
+ return {xs,series:rest.length?keep.concat(['Pozostałe']):keep,matrix};
+}
+function legend(series){return '<div style="display:flex;flex-wrap:wrap;gap:9px;padding:4px 18px 8px">'+series.map((nm,i)=>`<span style="font-size:9.5px;color:#555;display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:2px;background:${PALETTE[i%PALETTE.length]};display:inline-block"></span>${esc(String(nm).slice(0,24))}</span>`).join('')+'</div>';}
+function xticks(xs,PL,gap,bottom){const n=xs.length,step=Math.ceil(n/12)||1;let s='';xs.forEach((x,i)=>{if(i%step&&i!==n-1)return;const px=PL+i*gap+gap/2;const lab=String(x).length>5?String(x).slice(5):String(x);s+=`<text x="${px.toFixed(1)}" y="${bottom}" font-size="8" fill="#999" text-anchor="middle">${esc(lab)}</text>`;});return s;}
+function ovSeries(rows,xKey,xs){const m={};rows.forEach(r=>{const x=dimValue(r,xKey);if(!x)return;m[x]=m[x]||{cost:0,val:0,pur:0};m[x].cost+=(r.cost||0);m[x].val+=(r.val||0);m[x].pur+=(r.pur||0);});return xs.map(x=>{const o=m[x]||{cost:0,val:0,pur:0};return chrt.ov==='cpa'?(o.pur?o.cost/o.pur:0):(o.cost?o.val/o.cost:0);});}
+function ovDraw(rows,xKey,xs,xpos,PT,plotH,W,PR){
+ if(!chrt.ov||chrt.ov==='none')return '';
+ const vals=ovSeries(rows,xKey,xs);const maxV=Math.max(...vals.filter(v=>isFinite(v)),1e-9);
+ const py=v=>PT+(1-(v/maxV))*plotH,C='#111',lab=chrt.ov==='cpa'?'CPA':'ROAS',fmt=v=>chrt.ov==='cpa'?fN(v)+' zł':v.toFixed(2);
+ let s=`<polyline points="${xs.map((x,i)=>xpos(i).toFixed(1)+','+py(vals[i]).toFixed(1)).join(' ')}" fill="none" stroke="${C}" stroke-width="2"/>`;
+ xs.forEach((x,i)=>{s+=`<circle cx="${xpos(i).toFixed(1)}" cy="${py(vals[i]).toFixed(1)}" r="2.8" fill="${C}" stroke="#fff" stroke-width="1"><title>${esc(x)} · ${lab}: ${fmt(vals[i])}</title></circle>`;});
+ [maxV/2,maxV].forEach(t=>{s+=`<text x="${(W-PR+3)}" y="${(py(t)+3).toFixed(1)}" font-size="8" fill="${C}">${fmt(t)}</text>`;});
+ s+=`<text x="${W-PR-4}" y="${PT+9}" text-anchor="end" font-size="9" font-weight="700" fill="${C}">${lab} →</text>`;
+ return s;}
+function svgStack100(rows,xKey,byDim,metric){
+ const {xs,series,matrix}=timeSeries(rows,xKey,byDim,metric);
+ if(!xs.length)return '<p style="padding:12px;font-size:12px;color:var(--muted)">Brak danych</p>';
+ const W=1600,PL=44,PR=46,PT=10,PB=28,H=320,plotH=H-PT-PB,n=xs.length,gap=(W-PL-PR)/n,cw=Math.min(54,gap*0.8);
+ let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:${W}px;height:auto;display:block;margin:0 auto">`;
+ [0,.25,.5,.75,1].forEach(g=>{const y=PT+(1-g)*plotH;s+=`<line x1="${PL}" y1="${y.toFixed(1)}" x2="${W-PR}" y2="${y.toFixed(1)}" stroke="#eee"/><text x="2" y="${(y+3).toFixed(1)}" font-size="8" fill="#bbb">${g*100|0}%</text>`;});
+ xs.forEach((x,i)=>{const cx=PL+i*gap+gap/2-cw/2;const tot=series.reduce((a,nm)=>a+(matrix[x][nm]||0),0)||1;let acc=0;
+  series.forEach((nm,si)=>{const v=matrix[x][nm]||0,frac=v/tot,bh=frac*plotH,y=PT+(plotH-acc-bh);acc+=bh;
+   if(frac>0.0015)s+=`<rect x="${cx.toFixed(1)}" y="${y.toFixed(1)}" width="${cw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${PALETTE[si%PALETTE.length]}" opacity="0.9"><title>${esc(x)} · ${esc(nm)}: ${(frac*100).toFixed(1)}% (${fmtMetric(v,metric)})</title></rect>`;});});
+ s+=ovDraw(rows,xKey,xs,i=>PL+i*gap+gap/2,PT,plotH,W,PR);
+ s+=xticks(xs,PL,gap,H-9);
+ return legend(series)+s+'</svg>';
+}
+function svgTrend(rows,xKey,byDim,metric){
+ const {xs,series,matrix}=timeSeries(rows,xKey,byDim,metric);
+ if(!xs.length)return '<p style="padding:12px;font-size:12px;color:var(--muted)">Brak danych</p>';
+ const W=1600,PL=56,PR=46,PT=12,PB=26,H=320,plotH=H-PT-PB,n=xs.length;
+ let maxV=0;xs.forEach(x=>series.forEach(nm=>maxV=Math.max(maxV,matrix[x][nm]||0)));maxV=maxV||1;
+ const px=i=>PL+(n<2?0:i*(W-PL-PR)/(n-1)),py=v=>PT+(1-v/maxV)*plotH,gap=(W-PL-PR)/n;
+ let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:${W}px;height:auto;display:block;margin:0 auto">`;
+ [0,.5,1].forEach(g=>{const y=PT+(1-g)*plotH;s+=`<line x1="${PL}" y1="${y.toFixed(1)}" x2="${W-PR}" y2="${y.toFixed(1)}" stroke="#eee"/><text x="2" y="${(y+3).toFixed(1)}" font-size="8" fill="#bbb">${fN(maxV*g)}</text>`;});
+ series.forEach((nm,si)=>{const pts=xs.map((x,i)=>`${px(i).toFixed(1)},${py(matrix[x][nm]||0).toFixed(1)}`).join(' ');s+=`<polyline points="${pts}" fill="none" stroke="${PALETTE[si%PALETTE.length]}" stroke-width="2"/>`;});
+ s+=ovDraw(rows,xKey,xs,px,PT,plotH,W,PR);
+ xs.forEach((x,i)=>{if(i%(Math.ceil(n/12)||1)&&i!==n-1)return;const lab=String(x).length>5?String(x).slice(5):String(x);s+=`<text x="${px(i).toFixed(1)}" y="${H-8}" font-size="8" fill="#999" text-anchor="middle">${esc(lab)}</text>`;});
+ return legend(series)+s+'</svg>';
+}
+function chartPanel(rows,isRaw){
+ const bS='font-family:inherit;font-size:10px;padding:3px 8px;border-radius:5px;cursor:pointer;border:1px solid var(--border);background:none';
+ const sS=';background:#fce8e8;border-color:#e85d5d;font-weight:600';
+ const btn=(act,oc,lbl)=>`<button style="${bS}${act?sS:''}" onclick="${oc}">${lbl}</button>`;
+ if(!isRaw&&(chrt.by==='date'||chrt.by==='yw'||chrt.by==='ym'))chrt.by='camp';
+ if(!isRaw&&chrt.type!=='bar')chrt.type='bar';
+ let h=`<div style="padding:7px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:5px;flex-wrap:wrap;background:#fdfbf9">`;
+ h+=btn(chrt.vis,"chrt.vis=!chrt.vis;draw()",(chrt.vis?'▼':'▶')+' Wykres');
+ if(chrt.vis){
+  h+='<span style="font-size:10px;color:var(--muted);margin-left:6px">Typ:</span>';
+  (isRaw?[['bar','Słupki'],['trend','Trend w czasie'],['stack','Stacked 100%']]:[['bar','Słupki']]).forEach(t=>h+=btn(chrt.type===t[0],`chrt.type='${t[0]}';draw()`,t[1]));
+  h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Metryka:</span>';
+  MDEF.forEach(m=>h+=btn(chrt.metric===m.k,`chrt.metric='${m.k}';draw()`,m.l));
+  h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Wymiar:</span>';
+  let dims=[['camp','Kampania'],['adset','AdSet'],['strat','Strategia']].concat(detectTagDims().map(d=>[d.key,d.label]));
+  if(isRaw&&chrt.type==='bar')dims=[['date','Data']].concat(dims);
+  const dimAct=k=>{if(k==='date'||k==='yw'||k==='ym')return true;const v=new Set();for(const r of rows){const x=dimValue(r,k);if(x&&x!=='(brak)')v.add(x);if(v.size>=2)break;}return v.size>=2;};
+  if(!dimAct(chrt.by)){const f=dims.find(d=>dimAct(d[0]));if(f)chrt.by=f[0];}
+  const gS='font-family:inherit;font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:#f4f1ec;color:#c2bcb0;cursor:not-allowed';
+  dims.forEach(d=>{if(dimAct(d[0]))h+=btn(chrt.by===d[0],`chrt.by='${d[0]}';draw()`,d[1]);else h+=`<button style="${gS}" disabled title="Brak danych w tym widoku">${d[1]}</button>`;});
+  if(isRaw&&chrt.type!=='bar'){h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Oś czasu (X):</span>';[['yw','Tydzień'],['ym','Miesiąc'],['date','Dzień']].forEach(t=>h+=btn(chrt.x===t[0],`chrt.x='${t[0]}';draw()`,t[1]));}
+  if(isRaw&&chrt.type!=='bar'){h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Nakładka:</span>';[['none','—'],['roas','ROAS'],['cpa','CPA']].forEach(o=>h+=btn(chrt.ov===o[0],`chrt.ov='${o[0]}';draw()`,o[1]));}
+ }
+ h+='</div>';
+ if(chrt.vis){
+  let body, rws=rows;
+  if(!isRaw)rws=rows.map(r=>Object.assign({},r,{camp:r.camp||r._k,adset:r.adset||r._k,ad:r.ad||''}));
+  if(isRaw&&chrt.type==='stack')body=svgStack100(rws,chrt.x,chrt.by,chrt.metric);
+  else if(isRaw&&chrt.type==='trend')body=svgTrend(rws,chrt.x,chrt.by,chrt.metric);
+  else body=svgBarH(rws,chrt.by,chrt.metric);
+  let hint='';
+  if(chrt.type==='stack')hint='100% stacked: oś X = czas, każdy słupek = 100% udziału, kolory = wartości wymiaru — pokazuje jak zmieniał się MIX w czasie.';
+  else if(chrt.type==='trend')hint='Trend: wartość bezwzględna metryki w czasie, linia per wartość wymiaru (top 7 + Pozostałe).';
+  else hint='Słupki posortowane malejąco. Wymiar tagów rozpoznany automatycznie z naming convention [K:V].';
+  h+=`<div style="padding:10px 18px;border-bottom:1px solid var(--border);background:#fafaf8">${body}<div style="font-size:9.5px;color:var(--muted);margin-top:6px">${hint}</div></div>`;
+ }
+ return h;
+}
+
+function filterBar(total,shown){
+ return `<div style="padding:7px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:#fdfbf9">
+  <span style="font-size:13px">🔍</span>
+  <input id="flt-inp" value="${flt.replace(/"/g,'&quot;')}" oninput="flt=this.value;srt={k:null,d:1};draw()" placeholder="Filtruj wiersze…" style="border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;width:230px;outline:none" onfocus="this.style.borderColor='#e85d5d'" onblur="this.style.borderColor=''">
+  ${flt?`<button onclick="flt='';srt={k:null,d:1};draw()" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--muted)">✕</button>`:''}
+  <span style="font-size:10px;color:var(--muted)">${shown<total?`${shown} z ${total} wierszy`:total+' wierszy'}</span>
+ </div>`;
+}
+const sumKeys=["cost","reach","impr","clicks","oc","lpv","cv","atc","ic","pur","val","api"];
+function rawTable(rows,title){
+ const fr=sortRows(filterRows(rows));
+ const cols=[['ym','Y-M','l'],['yw','Y-W','l'],['date','Data','l'],['camp','Kampania','l'],['adset','AdSet','l'],['ad','Reklama','l'],
+  ['cost','Koszt'],['reach','Reach'],['impr','Impr'],['clicks','Link kl.'],['oc','Outbound'],['lpv','LP views'],['cv','Content V.'],['atc','ATC'],['ic','Checkout'],['pur','Zakupy'],['val','Wartość'],['api','Add Pay']];
+ let h=`<div class="card"><div class="card-hdr"><span class="card-ttl">${title}</span><span class="sub">${rows.length} wierszy</span></div>`;
+ h+=filterBar(rows.length,fr.length);
+ h+=chartPanel(fr,true);
+ h+=`<div class="tbl-scroll"><table class="dt"><thead><tr>`;
+ h+=cols.map(c=>{const s=srt.k===c[0];return`<th class="${c[2]||''}" onclick="sortBy('${c[0]}')" style="cursor:pointer${s?';color:#e85d5d':''}">${c[1]}${s?(srt.d===1?' ▲':' ▼'):''}</th>`;}).join('')+'</tr></thead><tbody>';
+ fr.slice(0,4000).forEach(r=>{h+='<tr>'+cols.map(c=>{let v=r[c[0]];const lf=c[2]==='l';
+   if(['cost','val'].includes(c[0]))v=fZ(v);else if(typeof v==='number')v=fN(v);
+   return`<td class="${lf?'l':''}" ${lf?`title="${String(r[c[0]]||'')}"`:''}>${lf&&String(r[c[0]]||'').length>30?String(r[c[0]]).replace(/[\[\]]/g,' ').slice(0,30):v}</td>`;}).join('')+'</tr>';});
+ const T={};sumKeys.forEach(k=>T[k]=fr.reduce((a,r)=>a+(r[k]||0),0));
+ h+='<tr class="tr-total">'+cols.map(c=>{if(c[0]==='ym')return'<td class="l">SUMA</td>';if(['date','yw','camp','adset','ad'].includes(c[0]))return'<td class="l"></td>';let v=T[c[0]];if(['cost','val'].includes(c[0]))v=fZ(v);else v=fN(v);return`<td>${v}</td>`;}).join('')+'</tr>';
+ return h+'</tbody></table></div></div>';
+}
+function totalTable(rows,title,keyLabel){
+ const cols=[[keyLabel,'l'],['reach','Reach'],['impr','Impr'],['freq','Freq'],['clicks','Link kl.'],['oc','Outbound'],['ctr','CTR'],['cpm','CPM zł'],['cost','Koszt zł'],
+  ['lpv','LP View'],['cv','Content V.'],['atc','ATC'],['ic','Checkout'],['api','Add Pay'],['pur','Zakupy'],
+  ['crpc','CR vs Chk'],['crpa','CR vs AtC'],['crpv','CR vs CV'],['crpl','CR vs LPV'],['cpp','Koszt/zakup'],['val','Wartość zł'],['roas','ROAS'],['aov','AOV zł']];
+ let h=`<div class="card"><div class="card-hdr"><span class="card-ttl">${title}</span><span class="sub">${rows.length} okresów · PLN</span></div><div class="tbl-scroll"><table class="dt"><thead><tr>`;
+ h+=cols.map(c=>`<th class="${c[2]==='l'?'l':''}">${c[1]}</th>`).join('')+'</tr></thead><tbody>';
+ rows.forEach(r=>{h+='<tr>'+cols.map(c=>{const k=c[0];let v;
+   if(c[1]===keyLabel||c.length>1&&c[1]==='l'){return `<td class="l">${r[Object.keys(r)[0]]}</td>`;}
+   v=r[k];
+   let _cls='';
+   if(['cost','val','cpm','cpp','aov'].includes(k))v=f2(v);
+   else if(['ctr','crpc','crpa','crpv','crpl'].includes(k))v=fP(v);
+   else if(k==='freq'){_cls=(r.freq>FREQ_T?'neg':(r.freq>FREQ_T*0.75?'warnv':''));v=r.freq?r.freq.toFixed(2):'';}
+   else if(k==='roas'){_cls=colRoas(r.roas);v=r.roas?r.roas.toFixed(2):'';}
+   else v=fN(v);
+   return `<td class="${_cls}">${v}</td>`;}).join('')+'</tr>';});
+ return h+'</tbody></table></div></div>';
+}
+function checkTable(){
+ const I={ok:'✅ OK',warn:'⚠️ Uwaga',todo:'◷ Do zrobienia',no:'⛔ Brak danych'};
+ const ok=CHECK.filter(c=>c[3]==='ok').length,wn=CHECK.filter(c=>c[3]==='warn').length,td=CHECK.filter(c=>c[3]==='todo').length;
+ let h=`<div class="card"><div class="card-hdr"><div><span class="card-ttl">Checklist</span><div class="sub" style="margin-top:4px">✅ ${ok} · ⚠️ ${wn} · ◷ ${td}</div></div><a class="qa-link" href="https://business.facebook.com/adsmanager/manage/campaigns?act=__META_ACCOUNT_ID__" target="_blank">↗ Menedżer Reklam</a></div>`;
+ h+='<div class="how"><b>Jak czytać:</b> reguła ⨉ liczba → status. „↗ komórka" skacze do dowodu w arkuszu. ⚠️/◷ = reguła naruszona lub liczba do sprawdzenia ręcznie w Meta.</div>';
+ h+='<div class="tbl-scroll"><table class="dt"><thead><tr><th>#</th><th class="l">Mtg / Skill</th><th class="l">Action item / Check</th><th class="l">Owner</th><th class="l">Weryfikacja</th><th class="l">Dowód Meta (Dataslayer/MCP)</th><th class="l">Jak sprawdzić jako człowiek</th><th class="l">Komentarz Huberta + W arkuszu</th><th class="l">Link</th></tr></thead><tbody>';
+ const SC={ok:'st-ok',warn:'st-warn',todo:'st-todo',no:'st-no'};
+ CHECK.forEach((c,i)=>{
+   const m=CMAP[i];
+   const stat=`<span class="${SC[c[3]]||''}">${I[c[3]]||''}</span>`;
+   let extra='';
+   if(m){extra=`<a class="cell-lnk" onclick="gotoCell('${m.s}',${m.r},${m.c})">↗ komórka ${SHCOL(m.s,m.c)}${m.r+1}</a><span class="cmt">${m.note}</span>`;}
+   h+=`<tr id="chk-${i}"><td>${i+1}</td><td class="l" style="font-weight:600;white-space:nowrap">${c[0]}</td><td class="l">${c[1]}</td><td class="l" style="white-space:nowrap">${c[2]}</td><td class="l" style="white-space:nowrap">${stat}</td><td class="l">${c[4]}</td><td class="l" style="color:var(--mid)">${c[5]}</td><td class="l">${extra||'<span style=\'color:#ccc;font-size:10px\'>—</span>'}</td><td class="l">${c[6]?`<a class="qa-link" href="${c[6]}" target="_blank">↗ Meta</a>`:'–'}</td></tr>`;
+ });
+ return h+'</tbody></table></div><div class="src">__AGENCY__ × __CLIENT__ · Meta Ads Dashboard · '+(new Date().toISOString().slice(0,10))+' · dane: Meta (Dataslayer) konto __META_ACCOUNT_ID__ · atrybucja 7d click + 1d view · waluta PLN · pull read-only (zero wywołań write API)</div></div>';
+}
+function rollupTable(rows,nameLabel,title){
+ const nameKey=nameLabel.includes('Kampania')?'camp':'adset';
+ const fr=sortRows(filterRows(rows.map(r=>({...r,_flt:String(r[nameKey]||'')}))));
+ const cols=[['name',nameLabel,'l'],['nads','# Reklam'],['nsets','# Adsetów'],['cost','Koszt zł'],['spshare','% budż.'],['impr','Impr'],['ctr','CTR'],['atc','ATC'],['ic','Checkout'],['pur','Zakupy'],['purwk','Zakupy/tydz'],['crpc','CR pur/chk'],['val','Wartość zł'],['roas','ROAS'],['sig','🔎 Sygnały → checklist','l']];
+ let h=`<div class="card"><div class="card-hdr"><span class="card-ttl">${title}</span><span class="sub">${rows.length} pozycji</span></div>`;
+ h+=filterBar(rows.length,fr.length);
+ h+=chartPanel(fr.map(r=>({_k:r[nameKey],...r})),false);
+ h+=`<div class="tbl-scroll"><table class="dt"><thead><tr>`;
+ h+=cols.map(c=>{const s=srt.k===c[0];return`<th class="${c[2]==='l'?'l':''}" onclick="sortBy('${c[0]}')" style="cursor:pointer${s?';color:#e85d5d':''}">${c[1]}${s?(srt.d===1?' ▲':' ▼'):''}</th>`;}).join('')+'</tr></thead><tbody>';
+ fr.forEach(r=>{const nm=r[nameKey];
+   h+='<tr>'+cols.map(c=>{const k=c[0];let v;
+     if(k==='name')return`<td class="l" title="${String(nm||'')}">${String(nm||'').replace(/[\[\]]/g,' ').slice(0,48)}</td>`;
+     if(k==='sig'){const sg=auditSignals(r);if(!sg.length)return '<td class="l"><span class="st-ok" style="font-size:9px">✓ OK</span></td>';const chips=sg.map(x=>`<a class="cell-lnk" style="color:#c0392b" onclick="gotoCheck(${x[1]})" title="Skok do pozycji checklisty #${x[1]+1} (anomalia w danych)">⚠ ${x[0]}</a>`).join('<br>');return`<td class="l" style="font-weight:600;line-height:1.5">${chips}</td>`;}
+     v=r[k];
+     if(['cost','val'].includes(k))v=fN(v)+' zł';
+     else if(k==='spshare'||k==='ctr'||k==='crpc')v=fP(v);
+     else if(k==='roas')v=v?v.toFixed(2):'';
+     else if(k==='purwk')v=v?v.toFixed(1):'0';
+     else v=fN(v);
+     return`<td>${v}</td>`;}).join('')+'</tr>';});
+ const T={cost:0,impr:0,atc:0,ic:0,pur:0,val:0};fr.forEach(r=>{for(const k in T)T[k]+=r[k]||0;});
+ h+=`<tr class="tr-total"><td class="l">SUMA (${fr.length})</td><td></td><td></td><td>${fN(T.cost)} zł</td><td>100%</td><td>${fN(T.impr)}</td><td>${fP(T.impr?(fr.reduce((a,r)=>a+r.oc,0))/T.impr:0)}</td><td>${fN(T.atc)}</td><td>${fN(T.ic)}</td><td>${fN(T.pur)}</td><td></td><td>${fP(T.ic?T.pur/T.ic:0)}</td><td>${fN(T.val)} zł</td><td>${(T.cost?T.val/T.cost:0).toFixed(2)}</td><td></td></tr>`;
+ return h+'</tbody></table></div><div class="note">Sygnały audytu (ostatnia kolumna, każdy klik = skok do powiązanej pozycji checklisty z podświetleniem): „&lt;25 zak./tydz" → #16 (reguła 50/25) · „&lt;4 kreacji" → #23 · „&gt;40% budżetu" → #25 (koncentracja) · „ROAS&lt;3" → #28 (zmęczenie/słaby zwrot). Liczone z danych ad-level Dataslayer — pozwala z każdego wiersza znaleźć opis problemu.</div></div>';
+}
+const R={
+ overview:overviewPanel,
+ tm_raw:()=>rawTable(tmRaw(),'FBA-RAW TM — '+ymPL(YM_CUR)+' (ad-level, pełny)'),
+ lm_raw:()=>rawTable(lmRaw(),'FBA-RAW LM — '+ymPL(YM_PREV)+' (ad-level, pełny)'),
+ total:()=>totalDiag()+attrBlock()+tmLmDelta()+totalTable(D.month,'FBA TOTAL — month over month','Year-Month'),
+ sheet:renderSheet,
+ bpl:()=>brkRawTab('placement'),
+ bage:()=>brkRawTab('age'),
+ tm:()=>totalTable(D.tm,'FBA TM — ten miesiąc, day-to-day','Data'),
+ lm:()=>totalTable(D.lm,'FBA LM — poprzedni miesiąc, day-to-day','Data'),
+ camp:()=>rollupTable(D.camp,'Kampania','Rollup per KAMPANIA — pełny lejek + ROAS + flagi audytu'),
+ adset:()=>rollupTable(D.adset,'AdSet','Rollup per ADSET — reguła 50/25 + liczba kreacji'),
+ rawfull:()=>rawTable(decodeRaw(D.craw),'FBA-RAW pełne — '+ymPL(YM_PREV)+' + '+ymPL(YM_CUR)+' ('+D.craw.length+' wierszy ad-level)'),
+ check:checkTable,
+};
+
+// ===== uniwersalne wykresy =====
+function svgLine(series,label,unit){
+ if(!series.length)return '';
+ const W=1180,H=230,PL=50,PR=16,PT=14,PB=26;
+ const xs=series.map(p=>p.x), ys=series.map(p=>p.y);
+ const maxY=Math.max(...ys,1), n=series.length;
+ const px=i=>PL+(n<2?0:i*(W-PL-PR)/(n-1));
+ const py=v=>PT+(1-v/maxY)*(H-PT-PB);
+ let pts=series.map((p,i)=>`${px(i).toFixed(1)},${py(p.y).toFixed(1)}`).join(' ');
+ let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:${W}px;height:auto;display:block;margin:0 auto">`;
+ [0,.5,1].forEach(g=>{const y=PT+(1-g)*(H-PT-PB);s+=`<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="#eee"/><text x="4" y="${y+3}" font-size="9" fill="#aaa">${fN(maxY*g)}</text>`;});
+ s+=`<polyline points="${pts}" fill="none" stroke="#e85d5d" stroke-width="2"/>`;
+ series.forEach((p,i)=>{s+=`<circle cx="${px(i).toFixed(1)}" cy="${py(p.y).toFixed(1)}" r="2.6" fill="#e85d5d"><title>${p.x}: ${p.y.toFixed(2)}${unit||''}</title></circle>`;});
+ series.forEach((p,i)=>{if(i%Math.ceil(n/8||1)===0||i===n-1)s+=`<text x="${px(i).toFixed(1)}" y="${H-8}" font-size="8" fill="#999" text-anchor="middle">${String(p.x).slice(5)}</text>`;});
+ s+='</svg>';
+ return `<div style="padding:10px 18px;border-bottom:1px solid var(--border);background:#fafaf8"><div style="font-size:11px;font-weight:600;color:var(--mid);margin-bottom:4px">${label}</div>${s}</div>`;
+}
+// ===== Diagnostyka (v2) — step-scan d/d + pęknięcie lejka + manual-check =====
+function totalDiag(){
+ const days=D.lm.concat(D.tm);
+ const r2a=r=>r.oc?r.atc/r.oc:0;
+ const hits=[];
+ for(let i=1;i<days.length;i++){
+  const a=days[i-1],b=days[i];
+  if((a.cost||0)<100||(b.cost||0)<100)continue;
+  const mv=[['Koszt',a.cost,b.cost,v=>fN(v)+' zł'],['CPM',a.cpm,b.cpm,v=>(v||0).toFixed(2)],['CTR',a.ctr,b.ctr,fP],['klik→ATC',r2a(a),r2a(b),fP]]
+   .filter(x=>x[1]>0&&Math.abs(x[2]-x[1])/x[1]>0.30)
+   .map(x=>({l:x[0],x:x[1],y:x[2],f:x[3],d:(x[2]-x[1])/x[1]}));
+  if(mv.length)hits.push({date:b.date,mv});
+ }
+ hits.sort((p,q)=>q.mv.length-p.mv.length||(p.date<q.date?1:-1));
+ let h=`<div class="card attr-card"><div class="card-hdr"><div><span class="card-ttl">🔍 Diagnostyka — skoki dzień-do-dnia</span><div class="sub" style="margin-top:3px">|Δ d/d| &gt; 30% (dni ze spend ≥ 100). Kilka metryk tego samego dnia = zmiana delivery/budżetu — NIE zmęczenie kreacji (fatigue psuje się per kreacja, stopniowo, nie skokiem na całym koncie).</div></div></div>`;
+ if(!hits.length){h+='<div class="how">Brak skokowych zmian d/d &gt;30% w TM+LM — przebieg ciągły. Jeśli wyniki spadają, szukaj trendu per kreacja (zmęczenie = frequency↑ + CTR↓ przez 2–4 tyg), nie pojedynczej daty.</div></div>';}
+ else{
+  h+='<div class="tbl-scroll" style="max-height:280px"><table class="dt"><thead><tr><th class="l">Data</th><th class="l">Metryki, które skoczyły razem</th><th class="l">Interpretacja</th></tr></thead><tbody>';
+  hits.slice(0,8).forEach(x=>{
+   const cells=x.mv.map(m=>`${m.l}: ${m.f(m.x)} → ${m.f(m.y)} <b class="${m.d>0?'pos':'neg'}">(${pmDelta(m.d)})</b>`).join(' · ');
+   const itp=x.mv.length>=2?'<span class="st-warn">⚠️ ≥2 metryki naraz → delivery/budżet (sprawdź historię zmian — checklist #41)</span>':'<span style="color:var(--muted)">pojedyncza metryka — obserwuj</span>';
+   h+=`<tr><td class="l" style="white-space:nowrap;font-weight:600">${x.date}</td><td class="l">${cells}</td><td class="l">${itp}</td></tr>`;});
+  if(hits.length>8)h+=`<tr><td class="l" colspan="3" style="color:var(--muted);font-size:10px">…i ${hits.length-8} kolejnych dni (pokazane: najwięcej metryk naraz)</td></tr>`;
+  h+='</tbody></table></div></div>';
+ }
+ const S=arr=>{const o={};['impr','oc','lpv','atc','ic','pur'].forEach(k=>o[k]=arr.reduce((s,r)=>s+(r[k]||0),0));return o;};
+ const t=S(D.tm),l=S(D.lm);
+ const steps=[['CTR (outbound/impr)',x=>x.impr?x.oc/x.impr:0,'jakość zasięgu — placement / budżet / kreacja'],['klik→ATC',x=>x.oc?x.atc/x.oc:0,'jakość ruchu / dopasowanie landing page'],['ATC→Checkout',x=>x.atc?x.ic/x.atc:0,'koszyk — cena / dostawa / UX'],['Checkout→Zakup',x=>x.ic?x.pur/x.ic:0,'płatności / strona / tracking (pixel-CAPI)']];
+ const rows=steps.map(s=>{const a=s[1](t),b=s[1](l);return{lbl:s[0],a,b,d:b?(a-b)/b:null,who:s[2]};});
+ let worst=null;rows.forEach(r=>{if(r.d!=null&&(worst==null||r.d<worst.d))worst=r;});
+ h+=`<div class="card attr-card"><div class="card-hdr"><div><span class="card-ttl">🪜 Gdzie pęka lejek — TM vs LM</span><div class="sub" style="margin-top:3px">Spadek na początku lejka = jakość ruchu (delivery); na końcu = strona / checkout / tracking. Napraw przyczynę — objaw zniknie sam.</div></div></div>`;
+ h+='<div class="tbl-scroll" style="max-height:none"><table class="dt"><thead><tr><th class="l">Krok</th><th>TM</th><th>LM</th><th>Δ %</th><th class="l">Gdy spada → patrz</th></tr></thead><tbody>';
+ rows.forEach(r=>{const w=worst&&r.lbl===worst.lbl&&r.d!=null&&r.d<-0.1;
+  h+=`<tr${w?' style="background:#fdf3f3"':''}><td class="l" style="font-weight:600">${r.lbl}${w?' 🔴':''}</td><td>${fP(r.a)}</td><td>${fP(r.b)}</td><td class="${r.d==null?'':(r.d>=0?'pos':'neg')}">${pmDelta(r.d)}</td><td class="l" style="color:var(--mid)">${r.who}</td></tr>`;});
+ h+='</tbody></table></div></div>';
+ const man=CHECK.map((c,i)=>({c,i})).filter(x=>x.c[0]==='MANUAL');
+ if(man.length){
+  const I={ok:'✅',warn:'⚠️',todo:'◷',no:'⛔'};
+  const done=man.filter(x=>x.c[3]==='ok').length;
+  h+=`<div class="card attr-card"><div class="card-hdr"><div><span class="card-ttl">🖐 Do sprawdzenia ręcznie — czego API nie widzi</span><div class="sub" style="margin-top:3px">${done}/${man.length} dostarczone. Pixel/EMQ, historia budżetów, learning phase, zmiany LP, promo konkurencji. Dostarcz CSV/screenshot wg instrukcji → checklista = 100%.</div></div></div>`;
+  h+='<div class="tbl-scroll" style="max-height:280px"><table class="dt"><thead><tr><th></th><th class="l">Pozycja</th><th class="l">Skąd wziąć (krok po kroku)</th><th class="l"></th></tr></thead><tbody>';
+  man.forEach(x=>{h+=`<tr><td>${I[x.c[3]]||'◷'}</td><td class="l" style="font-weight:600">${x.c[1]}</td><td class="l" style="color:var(--mid)">${x.c[5]}</td><td class="l" style="white-space:nowrap"><a class="cell-lnk" onclick="gotoCheck(${x.i})">↗ checklist #${x.i+1}</a></td></tr>`;});
+  h+='</tbody></table></div></div>';
+ }
+ return h;
+}
+// ===== konwersje wg okien atrybucji (1dc / 7dc / 7dc+1dv) =====
+function attrBlock(){
+ const wins=['1dc','7dc','7dc1dv'];
+ const tot=w=>{if(!DATA[w]||!DATA[w].month||!DATA[w].month.length)return null;const m=DATA[w].month;const s=k=>m.reduce((a,r)=>a+(r[k]||0),0);const cost=s('cost'),pur=s('pur'),val=s('val');return {cost,pur,val,roas:cost?val/cost:0,cpp:pur?cost/pur:0,aov:pur?val/pur:0};};
+ const T={'1dc':tot('1dc'),'7dc':tot('7dc'),'7dc1dv':tot('7dc1dv')};
+ const rows=[['Koszt (zł)','cost',v=>fN(v)],['Zakupy','pur',v=>fN(v)],['Wartość (zł)','val',v=>fN(v)],['ROAS','roas',v=>v.toFixed(2)],['Koszt/zakup (zł)','cpp',v=>v.toFixed(2)],['AOV (zł)','aov',v=>v.toFixed(2)]];
+ let h=`<div class="card attr-card"><div class="card-hdr"><div><span class="card-ttl">Konwersje wg okna atrybucji</span><div class="sub" style="margin-top:3px">Aktywny tryb: <b>${ATTR_LABELS[ATTR_MODE]}</b>.</div></div></div>`;
+ h+='<div class="tbl-scroll" style="max-height:none"><table class="dt"><thead><tr><th class="l">Metryka ('+ymPL(YM_PREV)+' + '+ymPL(YM_CUR)+')</th>';
+ wins.forEach(w=>h+=`<th class="win" style="${w===ATTR_MODE?'color:var(--coral)':''}">${ATTR_LABELS[w]}${w===ATTR_MODE?' ✓':''}</th>`);
+ h+='</tr></thead><tbody>';
+ rows.forEach(([lbl,k,fmt])=>{h+=`<tr><td class="l" style="font-weight:600">${lbl}</td>`;
+  wins.forEach(w=>{if(!T[w]){h+=`<td style="border-left:1px solid var(--border);color:#bbb">—</td>`;return;}const cl=(k==='roas')?colRoas(T[w].roas):'';h+=`<td class="${cl}" style="border-left:1px solid var(--border);${w===ATTR_MODE?'background:#fff5f5':''}">${fmt(T[w][k])}</td>`;});
+  h+='</tr>';});
+ h+='</tbody></table></div><div class="note">'+((T['1dc']&&T['7dc1dv'])?('Różnica 1dc → 7dc+1dv pokazuje wpływ atrybucji: zakupy '+fN(T['1dc'].pur)+' → '+fN(T['7dc1dv'].pur)+' (×'+(T['1dc'].pur?(T['7dc1dv'].pur/T['1dc'].pur).toFixed(1):'–')+'), ROAS '+T['1dc'].roas.toFixed(2)+' → '+T['7dc1dv'].roas.toFixed(2)+'. Koszt identyczny — atrybucja nie zmienia wydatku, tylko przypisanie konwersji.'):'Pobrane jedno okno (domyślne konta). Porównanie okien atrybucji jest opcjonalne — wymaga pull per okno (Dataslayer/Supermetrics), patrz DEPLOY.md.')+'</div></div>';
+ return h;
+}
+// ===== TM vs LM (this month vs last month) =====
+function tmLmDelta(){
+ const S=arr=>{const o={};['cost','impr','clicks','atc','ic','pur','val'].forEach(k=>o[k]=arr.reduce((a,r)=>a+(r[k]||0),0));o.roas=o.cost?o.val/o.cost:0;o.cpp=o.pur?o.cost/o.pur:0;return o;};
+ const tm=S(D.tm), lm=S(D.lm);
+ const rows=[['Koszt zł','cost',fN],['Zakupy','pur',fN],['Wartość zł','val',fN],['ROAS','roas',v=>v.toFixed(2)],['Koszt/zakup zł','cpp',v=>v.toFixed(2)],['Wyświetlenia','impr',fN],['ATC','atc',fN],['Checkout','ic',fN]];
+ let h=`<div class="card attr-card"><div class="card-hdr"><div><span class="card-ttl">TM vs LM — ten miesiąc vs poprzedni</span><div class="sub" style="margin-top:3px">${ymPL(YM_CUR)} = TM (może być MTD, niepełny)</div></div></div>`;
+ h+='<div class="tbl-scroll" style="max-height:none"><table class="dt"><thead><tr><th class="l">Metryka</th><th>TM ('+ymPL(YM_CUR)+')</th><th>LM ('+ymPL(YM_PREV)+')</th><th>Δ %</th></tr></thead><tbody>';
+ rows.forEach(([lbl,k,fmt])=>{const a=tm[k],b=lm[k];const d=b?(a-b)/b:null;
+   const good=(k==='cpp')? (d<0):(d>0);
+   h+=`<tr><td class="l" style="font-weight:600">${lbl}</td><td>${fmt(a)}</td><td>${fmt(b)}</td><td class="${d==null?'':(good?'pos':'neg')}">${pmDelta(d)}</td></tr>`;});
+ h+='</tbody></table></div></div>';
+ const ser=D.tm.map(r=>({x:r.date,y:r.roas||0}));
+ h+=`<div class="card attr-card">${svgLine(ser,'ROAS dzień po dniu — '+ymPL(YM_CUR)+' (TM)','x')}</div>`;
+ return h;
+}
+// ===== Tier 2 arkusz (Handsontable + HyperFormula) =====
+const RS="'FBA-RAW 7dc 1dv'";
+function colLetter(i){let s='';do{s=String.fromCharCode(65+i%26)+s;i=Math.floor(i/26)-1;}while(i>=0);return s;}
+const RAW_HDR=['Year-Month','Year-Week','Date','Campaign name','AdSet name','Ad name','Total Cost','Reach','Impressions','Clicks','Outbound clicks','Landing page views','Website content views','Website adds to cart','Website checkouts init','Website purchases','Website purchases conv','Website adds of payment'];
+const TOT_HDR=['Year-Month','Koszt','Reach','Impr','Link kl.','Outbound','LP views','Content V.','ATC','Checkout','Zakupy','Wartość','Add Pay','CTR','CPM','ROAS','AOV','Koszt/zakup','CR pur/chk','CR pur/ATC'];
+const TM_HDR=['Date'].concat(TOT_HDR.slice(1));
+function rawArr(rows){return rows.map(r=>[r.ym,r.yw,r.date,r.camp,r.adset,r.ad,r.cost,r.reach,r.impr,r.clicks,r.oc,r.lpv,r.cv,r.atc,r.ic,r.pur,r.val,r.api]);}
+function totFormula(keyVals,rawSheet,keyCol){ // keyVals: [{key,n}]; rawSheet = quoted sheet name; keyCol = kolumna kryterium (A=ym, C=date, D=segment)
+ const RSx=rawSheet||RS;
+ return keyVals.map(({key,n})=>{
+  // match col: A=Year-Month (TOTAL), C=Date (TM/LM), D=Campaign/segment (breakdowny)
+  const mc=keyCol||((key.indexOf('-')>0)?'C':'A');
+  // HyperFormula traktuje '|' jako znak specjalny w kryterium SUMIF — podmieniamy na wildcard '?'
+  const crit=String(key).replace(/\|/g,'?');
+  const q=(src)=>`=SUMIF(${RSx}!${mc}:${mc},"${crit}",${RSx}!${src}:${src})`;
+  const ie=(f)=>`=IFERROR(${f},"")`;
+  return [key,q('G'),q('H'),q('I'),q('J'),q('K'),q('L'),q('M'),q('N'),q('O'),q('P'),q('Q'),q('R'),
+   ie(`F${n}/D${n}`),ie(`B${n}/D${n}*1000`),ie(`L${n}/B${n}`),ie(`L${n}/K${n}`),ie(`B${n}/K${n}`),ie(`K${n}/J${n}`),ie(`K${n}/I${n}`)];
+ });
+}
+// breakdowny placement/wiek: RAW = 18 kolumn (schemat FBA-RAW, segment w kol. „Campaign name"), TOTAL = SUMIF po segmencie (kol. D) w formacie FBA TOTAL
+const BRKT_HDR=['Segment'].concat(TOT_HDR.slice(1));
+const SH={built:false,active:'r_7dc1dv',hot:{},hf:null,pending:null};
+const SHEET_DEFS=[
+ {id:'r_1dc',sheet:'FBA-RAW 1dc',label:'📋 RAW 1dc',txt:6,kind:'raw',win:'1dc'},
+ {id:'r_7dc',sheet:'FBA-RAW 7dc',label:'📋 RAW 7dc',txt:6,kind:'raw',win:'7dc'},
+ {id:'r_7dc1dv',sheet:'FBA-RAW 7dc 1dv',label:'📋 RAW 7dc 1dv',txt:6,kind:'raw',win:'7dc1dv'},
+ {id:'t_1dc',sheet:'FBA TOTAL 1dc',label:'∑ TOTAL 1dc',txt:1,kind:'totMonth',win:'1dc',rawSheet:"'FBA-RAW 1dc'"},
+ {id:'t_7dc',sheet:'FBA TOTAL 7dc',label:'∑ TOTAL 7dc',txt:1,kind:'totMonth',win:'7dc',rawSheet:"'FBA-RAW 7dc'"},
+ {id:'t',sheet:'FBA TOTAL 7dc 1dv',label:'∑ TOTAL 7dc 1dv',txt:1,kind:'totMonth',win:'7dc1dv',rawSheet:"'FBA-RAW 7dc 1dv'"},
+ {id:'tm',sheet:'FBA TM 7dc 1dv',label:'TM 7dc 1dv',txt:1,kind:'totDay',win:'7dc1dv',month:YM_CUR,rawSheet:"'FBA-RAW 7dc 1dv'"},
+ {id:'lm',sheet:'FBA LM 7dc 1dv',label:'LM 7dc 1dv',txt:1,kind:'totDay',win:'7dc1dv',month:YM_PREV,rawSheet:"'FBA-RAW 7dc 1dv'"},
+ {id:'rtm',sheet:'FBA-RAW TM 7dc 1dv',label:'RAW TM',txt:6,kind:'raw',win:'7dc1dv',filter:YM_CUR},
+ {id:'rlm',sheet:'FBA-RAW LM 7dc 1dv',label:'RAW LM',txt:6,kind:'raw',win:'7dc1dv',filter:YM_PREV},
+ {id:'r_bpl',sheet:'BRK-RAW Placement',label:'📋 RAW Placement',txt:6,kind:'raw',brkwin:'placement'},
+ {id:'t_bpl',sheet:'BRK TOTAL Placement',label:'∑ TOTAL Placement',txt:1,kind:'brkTotSeg',brkwin:'placement',rawSheet:"'BRK-RAW Placement'"},
+ {id:'r_bage',sheet:'BRK-RAW Wiek',label:'📋 RAW Wiek',txt:6,kind:'raw',brkwin:'age'},
+ {id:'t_bage',sheet:'BRK TOTAL Wiek',label:'∑ TOTAL Wiek',txt:1,kind:'brkTotSeg',brkwin:'age',rawSheet:"'BRK-RAW Wiek'"}
+];
+function SHCOL(sid,c){return colLetter(c);}
+function sheetData(def){
+ const W=DATA[def.win]||(def.brkwin?brkWindow(def.brkwin):D);
+ if(def.kind==='raw'){let rows=decodeRaw(W.craw,W.lut);if(def.filter)rows=rows.filter(r=>r.ym===def.filter);return {hdr:RAW_HDR,data:rawArr(rows)};}
+ if(def.kind==='totMonth'){const yms=W.month.map(r=>r.ym);return {hdr:TOT_HDR,data:totFormula(yms.map((k,i)=>({key:k,n:i+1})),def.rawSheet)};}
+ if(def.kind==='totDay'){const dates=W.lut.dates.filter(d=>{const ym=d.slice(0,4)+'|'+d.slice(5,7);return ym===def.month;}).sort();return {hdr:TM_HDR,data:totFormula(dates.map((k,i)=>({key:k,n:i+1})),def.rawSheet)};}
+ if(def.kind==='brkTotSeg'){const segs=brkWindow(def.brkwin).segs;return {hdr:BRKT_HDR,data:totFormula(segs.map((s,i)=>({key:s,n:i+1})),def.rawSheet,'D')};}
+ return {hdr:[],data:[]};
+}
+function renderSheet(){
+ let h=`<div class="card"><div class="card-hdr"><div><span class="card-ttl">Arkusz RAW + formuły — edytowalny</span><div class="sub" style="margin-top:3px">14 arkuszy · TOTAL = SUMIF z RAW</div></div></div>`;
+ h+='<div class="sheet-bar"><span style="font-size:10px;color:var(--muted)">Arkusz:</span>';
+ SHEET_DEFS.forEach(d=>{const ph=d.kind==='ph';h+=`<button class="sheet-btn ${ph?'ph':''} ${d.id===SH.active?'active':''}" onclick="switchSheet('${d.id}')">${d.label}</button>`;});
+ h+='<span style="flex:1"></span>';
+ h+=`<button class="sheet-act" onclick="dlSheetCsv()">⬇ CSV aktywnego</button><button class="sheet-act" onclick="shUndo()">↶</button><button class="sheet-act" onclick="shRedo()">↷</button><button class="sheet-act" onclick="shReset()">↻ reset</button><span id="sh-saved" style="font-size:10px;color:var(--muted)">—</span>`;
+ h+='</div>';
+ h+=`<div class="fx-bar"><span class="fx-lbl">fx</span><span id="fx-cell" class="fx-cell">—</span><input id="fx-input" class="fx-input" readonly placeholder="klik komórkę → zobaczysz formułę (=SUMIF…) albo wartość źródłową"></div>`;
+ SHEET_DEFS.forEach(d=>{
+   if(d.kind==='ph'){h+=`<div class="sh-pane ${d.id===SH.active?'active':''}" id="pane-${d.id}"><div class="ph-pane">Arkusz <b>${d.sheet}</b> — gotowa struktura, brak danych.<br>To okno atrybucji nie zostało jeszcze pobrane. Wpisz <b>„pobierz 1dc 7dc"</b> aby dociągnąć z Dataslayer (Meta act___META_ACCOUNT_ID__).<br><span style="font-size:11px">Po pull dane wpadną tu 1:1 jak w arkuszu 7dc 1dv.</span></div></div>`;}
+   else{h+=`<div class="sh-pane ${d.id===SH.active?'active':''}" id="pane-${d.id}"><div class="hot-host" id="host-${d.id}"></div></div>`;}
+ });
+ h+='<div class="gs-tabbar">';
+ SHEET_DEFS.forEach(d=>{const ph=d.kind==='ph';h+=`<button class="gs-tab ${ph?'ph':''} ${d.id===SH.active?'active':''}" onclick="switchSheet('${d.id}')">${d.sheet}</button>`;});
+ h+='</div>';
+ h+='<div class="note">TOTAL = formuły SUMIF z RAW (zero wpisanych liczb) — <b>klik dowolną komórkę, a w pasku „fx" u góry zobaczysz jak została policzona</b>. Zapis edycji lokalnie (localStorage).</div>';
+ h+='</div>';
+ setTimeout(buildSheets,30);
+ return h;
+}
+function buildSheets(){
+ if(typeof Handsontable==='undefined'){const el=document.getElementById('host-'+SH.active);if(el)el.innerHTML='<div class="ph-pane">Ładowanie biblioteki arkusza… odśwież jeśli nie znika (wymaga internetu — CDN Handsontable).</div>';return;}
+ SH.hf=HyperFormula.buildEmpty({licenseKey:'internal-use-in-handsontable'});
+ const common={licenseKey:'non-commercial-and-evaluation',rowHeaders:true,height:'58vh',stretchH:'all',colWidths:108,manualColumnResize:true,manualRowResize:true,contextMenu:true,copyPaste:true,fillHandle:true,autoWrapRow:true,readOnly:false};
+ SH.hot={};
+ let stored={};try{stored=JSON.parse(localStorage.getItem('meta-ads-checklist-sheet-v1')||'{}');}catch(e){}
+ SHEET_DEFS.forEach(def=>{
+   if(def.kind==='ph')return;
+   const host=document.getElementById('host-'+def.id);if(!host)return;
+   const {hdr,data}=sheetData(def);
+   const dat=stored[def.id]&&stored[def.id].length===data.length?stored[def.id].map(r=>[...r]):data;
+   SH.hot[def.id]=new Handsontable(host,Object.assign({},common,{
+     data:dat,colHeaders:true,nestedHeaders:[hdr.map((_,i)=>colLetter(i)),hdr],
+     columns:hdr.map((x,i)=>(i<def.txt?{type:'text'}:{type:'numeric',className:'htRight',numericFormat:colFmt(x)})),
+     formulas:{engine:SH.hf,sheetName:def.sheet},
+     cells:(row)=>def.kind&&def.kind.indexOf('tot')===0?{className:'htRight'}:{},
+     afterChange:(ch,src)=>{if(src!=='loadData')saveSheets();},
+     afterSelectionEnd:(r,c)=>showFx(def.id,r,c)
+   }));
+ });
+ SH.built=true;
+ const pend=SH.pending;SH.pending=null;
+ if(pend){switchSheet(pend.id);const ht=SH.hot[pend.id];if(ht){try{ht.selectCell(pend.r,pend.c);ht.scrollViewportTo(pend.r,pend.c);}catch(e){}}}
+ else{const ht=SH.hot[SH.active];if(ht)setTimeout(()=>ht.render(),20);}
+}
+function switchSheet(id){
+ SH.active=id;
+ document.querySelectorAll('.sh-pane').forEach(p=>p.classList.toggle('active',p.id==='pane-'+id));
+ document.querySelectorAll('.sheet-btn').forEach(b=>{});
+ document.querySelectorAll('.sheet-bar .sheet-btn').forEach(b=>b.classList.toggle('active', b.getAttribute('onclick')==="switchSheet('"+id+"')"));
+ document.querySelectorAll('.gs-tab').forEach(b=>b.classList.toggle('active', b.getAttribute('onclick')==="switchSheet('"+id+"')"));
+ const ht=SH.hot[id];if(ht)setTimeout(()=>ht.render(),10);
+}
+function gotoCell(sid,r,c){active='sheet';SH.pending={id:sid,r:r,c:c};draw();}
+function saveSheets(){try{const o={};for(const k in SH.hot){o[k]=SH.hot[k].getSourceData();}localStorage.setItem('meta-ads-checklist-sheet-v1',JSON.stringify(o));const e=document.getElementById('sh-saved');if(e)e.textContent='💾 zapisano lokalnie';}catch(e){}}
+function shUndo(){const h=SH.hot[SH.active];if(h)h.undo();}
+function shRedo(){const h=SH.hot[SH.active];if(h)h.redo();}
+function shReset(){if(!confirm('Odrzucić lokalne zmiany i wczytać oryginał?'))return;localStorage.removeItem('meta-ads-checklist-sheet-v1');SH.built=false;buildSheets();}
+function dlSheetCsv(){const h=SH.hot[SH.active];if(!h)return;const d=h.getData();const csv=d.map(r=>r.map(v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(',')).join('\n');const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=SH.active+'.csv';a.click();}
+// ===== Ocena z perspektywy Huberta =====
+
+
+
+function provenanceRows(){
+ return [
+  ['Wydatki / Koszt','tag-p','[P] Dataslayer (Meta API)','live 2026-06-08','Suma ad-level (3379 wierszy) — kolumna Total Cost. W arkuszu: SUM/SUMIF z RAW.'],
+  ['Przychód / Wartość zakupów','tag-p','[P] Meta pixel via Dataslayer','live 2026-06-08','Website purchases conv value. ROAS = Wartość ÷ Koszt (formuła).'],
+  ['Zakupy / lejek (LPV→ATC→Checkout)','tag-p','[P] Meta pixel','live 2026-06-08','Eventy pikselowe, sumowane z ad-level.'],
+  ['ROAS / CR / CPM / AOV','tag-c','[C] policzone (formuła)','live','Dzielenie metryk [P] — w arkuszu jawna formuła, nie wpisana liczba.'],
+  ['Frequency (account-level)','tag-p','[P] Meta API','2026-06-09','Realne 5,35 (reach dedup) — powyżej progu ≤4. Zakładka Placement (callout). Uwaga: w tabelach dziennych suma ad-level zawyża; ta liczba jest właściwa.'],
+  ['1d click / 7d click / 7d click+1d view','tag-p','[P] Dataslayer (3 pulle)','2026-06-09','Wszystkie 3 okna pobrane osobno (conversion_attribute per okno). Przełącznik trybu u góry; arkusze per okno z SUMIF.'],
+  ['Placement / Audience Network / kohorty wieku','tag-p','[P] Meta API','2026-06-09','Pobrane (breakdowns publisher_platform + age). AN tylko 1,5% i efektywny; 65+ przepala. Zakładki Placement/Wiek (wykres + TOTAL + arkusze RAW). Atrybucja domyślna konta (nie per okno).']
+ ];
+}
+function overviewPanel(){
+ const DESC={
+  camp:'Wyniki per kampania — pełny lejek, ROAS, flagi audytu',
+  adset:'Wyniki per adset — reguła 50/25, liczba kreacji, flagi',
+  total:'Diagnostyka (skoki d/d + pęknięcie lejka + manual-check) · sumy MoM, lejek, CR, ROAS · przełącznik atrybucji + porównanie okien',
+  tm:'Bieżący miesiąc, dzień po dniu',
+  lm:'Poprzedni miesiąc, dzień po dniu',
+  tm_raw:'Surowe wiersze ad-level — bieżący mies.',
+  lm_raw:'Surowe wiersze ad-level — poprzedni mies.',
+  rawfull:'Wszystkie wiersze ad-level (RAW)',
+  sheet:'Edytowalny arkusz — 14 zakładek RAW+TOTAL, formuły SUMIF',
+  bpl:'Placement (FB / IG / Audience Network) — RAW + wykres',
+  bage:'Kohorty wiekowe — RAW + wykres',
+  check:'Checklist Paid Social × AI — 33 pozycje, klik → dowód'
+ };
+ let h='<div class="card"><div class="card-hdr"><span class="card-ttl">Index</span><span class="sub">kliknij, aby przejść</span></div><div class="idx-grid">';
+ TABS.filter(t=>t.id!=='overview').forEach(t=>{
+  h+=`<button class="idx-card" onclick="flt='';srt={k:null,d:1};active='${t.id}';draw()"><span class="idx-t">${t.label}</span><span class="idx-d">${DESC[t.id]||''}</span></button>`;
+ });
+ h+='</div></div>';
+ h+='<div class="card"><div class="card-hdr"><span class="card-ttl">Źródła danych</span><span class="sub">skąd pochodzi każda liczba</span></div>';
+ h+='<div class="tbl-scroll" style="max-height:none"><table class="dt prov"><thead><tr><th class="l">Metryka</th><th class="l">Zaufanie / źródło</th><th class="l">Świeżość</th><th class="l">Jak policzone</th></tr></thead><tbody>';
+ provenanceRows().forEach(r=>{h+=`<tr><td class="l" style="font-weight:600">${r[0]}</td><td class="l"><span class="${r[1]}">${r[2]}</span></td><td class="l">${r[3]}</td><td class="l" style="color:var(--mid)">${r[4]}</td></tr>`;});
+ h+='</tbody></table></div>';
+ h+='<div class="note">Legenda: <span class="tag-p">[P]</span> wprost z platformy (Dataslayer/Meta) · <span class="tag-c">[C]</span> policzone formułą z [P] · <span class="tag-s">[S]</span> szacunek lub brak danych — nie cytować jako twardy fakt.</div></div>';
+ return h;
+}
+
+// flaga audytu -> pozycja checklisty (0-based index w CHECK)
+const FLAGMAP={'<25/tydz':15,'<4 kreacji':22};
+function gotoCheck(idx){active='check';draw();setTimeout(()=>{const el=document.getElementById('chk-'+idx);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}},80);}
+// format kolumn arkusza (HoT numericFormat) — żeby TOTAL czytał się jak liczby, nie surowe floaty
+function colFmt(h){h=String(h).toLowerCase();
+ if(h.indexOf('roas')>=0)return{pattern:'0,0.00'};
+ if(h.indexOf('ctr')>=0||h.indexOf('cr ')>=0)return{pattern:'0.00%'};
+ if(['koszt','wartość','cpm','aov','cost','conv'].some(x=>h.indexOf(x)>=0))return{pattern:'0,0.00'};
+ return{pattern:'0,0'};}
+// sygnały audytu per wiersz rollup -> [label, indeks pozycji checklisty]
+function auditSignals(r){const s=[];
+ if(r.purwk!=null&&r.purwk<25)s.push(['<25 zak./tydz',15]);
+ if((r.nads||0)>0&&r.nads<4)s.push(['<4 kreacji',22]);
+ if((r.spshare||0)>0.40)s.push(['>40% budżetu',24]);
+ if(r.roas!=null&&r.roas>0&&r.roas<3)s.push(['ROAS<3',27]);
+ return s;}
+// ===== Breakdowny placement/wiek — format TOTAL + wykresy (Meta API, account-default attribution) =====
+// placement/wiek jako dataset w schemacie FBA-RAW (18 kolumn, segment w kol. „Campaign name")
+let _brkw={};
+function brkWindow(type){
+ if(!BRK[type]||!BRK[type].daily||!BRK[type].daily.length)return {craw:[],lut:{yms:[],yws:[],dates:[],camps:[],adsets:[],ads:[]},segs:[]};
+ if(_brkw[type])return _brkw[type];
+ const daily=BRK[type].daily;
+ const ymap={};const W7=D;W7.craw.forEach(r=>{ymap[W7.lut.dates[r[2]]]=W7.lut.yws[r[1]];});
+ // daty z Meta API przychodzą jako "May 1, 202(6)" — normalizuj do ISO (rok=2026, cały dataset to 2026)
+ const MM={Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'};
+ const isoDate=s=>{if(/^\d{4}-\d{2}-\d{2}/.test(s))return String(s).slice(0,10);const m=String(s).match(/^([A-Z][a-z]{2})\w*\s+(\d{1,2})/);return m?('2026-'+MM[m[1]]+'-'+String(m[2]).padStart(2,'0')):s;};
+ const yms=[],yws=[],dates=[],camps=[],adsets=[''],ads=[''];
+ const idx=(a,v)=>{v=v||'';let i=a.indexOf(v);if(i<0){a.push(v);i=a.length-1;}return i;};
+ const craw=daily.map(r=>{const dt=isoDate(r.date);const ym=dt.slice(0,4)+'|'+dt.slice(5,7);const yw=ymap[dt]||'';
+  return [idx(yms,ym),idx(yws,yw),idx(dates,dt),idx(camps,r.seg),0,0,r.cost,r.reach,r.impr,r.clicks,0,0,0,0,0,r.pur,r.val,0];});
+ _brkw[type]={craw,lut:{yms,yws,dates,camps,adsets,ads},segs:BRK[type].roll.map(x=>x.seg)};
+ return _brkw[type];
+}
+function brkRawTab(type){
+ const lab0=type==='placement'?'Placement':'Wiek';
+ if(!BRK[type]||!BRK[type].daily||!BRK[type].daily.length)return `<div class="card"><div class="card-hdr"><div><span class="card-ttl">🔬 ${lab0}</span></div></div><div class="how">Breakdown <b>${lab0}</b> nie został pobrany. To opcjonalny pull z Meta Ads MCP (ads_get_ad_entities, breakdowns=${type==='placement'?'publisher_platform':'age'}, time_increment=1) — patrz DEPLOY.md krok 2. Dashboard działa bez niego.</div></div>`;
+ const W=brkWindow(type), lab=lab0;
+ let h='';
+ if(type==='placement'){const fq=BREAKDOWNS.freq.frequency;
+  h+=`<div class="card attr-card"><div class="note" style="background:${fq>FREQ_T?'#fdecea':'#eafaf1'};color:${fq>FREQ_T?'#c0392b':'#16794a'};font-weight:600;padding:11px 18px">Frequency (account-level, reach dedup ${fN(BREAKDOWNS.freq.reach)}): <b>${fq.toFixed(2)}</b> ${fq>FREQ_T?'🔴 powyżej progu ≤4 — zmęczenie (odśwież kreacje / poszerz audience).':'✅ w normie (≤4).'}</div></div>`;}
+ h+=rawTable(decodeRaw(W.craw,W.lut), `${lab} — RAW (dzień × segment · atrybucja domyślna konta)`);
+ h+=`<div class="note"><b>Schemat 1:1 z FBA-RAW</b> — segment w kolumnie „Kampania"; wykres grupuj po „Kampania" = po segmencie. Środek lejka (Outbound/LP/Content/ATC/Checkout/AddPay) = 0: Meta API nie zwraca go w breakdownach. Atrybucja domyślna konta (nie per okno). Źródło: Meta breakdowns ${type==='placement'?'publisher_platform':'age'} · 2026-06-09. TOTAL po segmencie: zakładka 📊 Arkusz → ∑ TOTAL ${lab}.</div>`;
+ return h;
+}
+// ===== globalny przełącznik trybu atrybucji (1dc / 7dc / 7dc+1dv) =====
+const ATTR_LABELS={'1dc':'1d click','7dc':'7d click','7dc1dv':'7d click + 1d view'};
+function setAttr(m){if(!DATA[m])return;ATTR_MODE=m;D=DATA[m];flt='';srt={k:null,d:1};if(typeof SH!=='undefined')SH.built=false;draw();}
+function renderAttrBar(){
+ const el=document.getElementById('attrbar');if(!el)return;
+ let h='<span class="albl">Tryb atrybucji:</span>';
+ ['1dc','7dc','7dc1dv'].forEach(m=>{const has=!!(DATA[m]&&DATA[m].month&&DATA[m].month.length);h+=`<button class="attrbtn ${ATTR_MODE===m?'on':''}" ${has?'':'disabled style="opacity:.35;cursor:not-allowed" title="okno nie pobrane (opcjonalne)"'} onclick="setAttr('${m}')">${ATTR_LABELS[m]}</button>`;});
+ const w=DATA[ATTR_MODE];const S=k=>w.month.reduce((a,r)=>a+(r[k]||0),0);
+ const cost=S('cost'),pur=S('pur'),val=S('val');const roas=cost?val/cost:0;
+ h+=`<span class="asum">${fN(cost)} zł · ${fN(pur)} zakupów · ${fN(val)} zł wart. · ROAS <b>${roas.toFixed(2)}</b></span>`;
+ el.innerHTML=h;
+}
+// chowa wyjaśnienia (.note bez własnego tła + .how) w rozwijane toggle — dokument zostaje przejrzysty
+function collapseNotes(){
+ document.querySelectorAll('#main .note:not([style]):not(.tg), #main .how:not(.tg)').forEach(el=>{
+  const html=el.innerHTML; el.classList.add('tg');
+  el.innerHTML=`<details class="exp"><summary>szczegóły / wyjaśnienie</summary><div class="exp-body">${html}</div></details>`;
+ });
+}
+function showFx(id,r,c){
+ const hot=SH.hot[id];if(!hot)return;
+ let src;try{src=hot.getSourceDataAtCell(r,c);}catch(e){src=hot.getDataAtCell(r,c);}
+ const def=SHEET_DEFS.find(d=>d.id===id);
+ const fc=document.getElementById('fx-cell'),fi=document.getElementById('fx-input');
+ if(fc)fc.textContent=(def?def.sheet:id)+' · '+colLetter(c)+(r+1);
+ if(fi){const isF=typeof src==='string'&&src[0]==='=';fi.value=isF?src:(src==null||src===''?'(pusta)':'wartość: '+src);fi.classList.toggle('isformula',isF);}
+}
+function draw(){
+ renderAttrBar();
+ const pos=document.activeElement&&document.activeElement.id==='flt-inp'?document.activeElement.selectionStart:-1;
+ document.getElementById('tabs').innerHTML=TABS.map(t=>`<button class="tab ${t.id===active?'active':''}" data-id="${t.id}">${t.label}</button>`).join('');
+ document.getElementById('main').innerHTML=R[active]();
+ collapseNotes();
+ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{flt='';srt={k:null,d:1};active=b.dataset.id;draw();});
+ if(pos>=0){const i=document.getElementById('flt-inp');if(i){i.focus();try{i.selectionStart=i.selectionEnd=pos;}catch(e){}}}
+}
+draw();
+// ===== interaktywny hover na wykresach (instant tooltip podążający za kursorem) =====
+(function(){
+ const tip=document.createElement('div');tip.id='chart-tip';document.body.appendChild(tip);
+ let on=false;
+ const hit=t=>t&&t.tagName&&['rect','circle','polyline','path'].includes(t.tagName.toLowerCase())&&t.closest&&t.closest('svg')&&t.querySelector&&t.querySelector('title');
+ document.addEventListener('mouseover',e=>{const t=e.target;if(hit(t)){const txt=t.querySelector('title').textContent;if(txt){tip.textContent=txt;tip.style.display='block';on=true;t.dataset._o=t.getAttribute('opacity')||'';try{t.setAttribute('opacity','1');}catch(_){}}}},true);
+ document.addEventListener('mousemove',e=>{if(!on)return;const w=window.innerWidth,h=window.innerHeight;let x=e.clientX+14,y=e.clientY+14;const r=tip.getBoundingClientRect();if(x+r.width>w-8)x=e.clientX-r.width-14;if(y+r.height>h-8)y=e.clientY-r.height-14;tip.style.left=x+'px';tip.style.top=y+'px';});
+ document.addEventListener('mouseout',e=>{const t=e.target;if(on&&hit(t)){tip.style.display='none';on=false;if(t.dataset._o!==undefined&&t.dataset._o!=='')try{t.setAttribute('opacity',t.dataset._o);}catch(_){}}},true);
+})();
+</script>
+<div class="src">__AGENCY__ × __CLIENT__ · Meta Ads Simple Dash · arkusz edytowalny Handsontable+HyperFormula · dane: Meta Ads konto act___META_ACCOUNT_ID__ · okna atrybucji przełączalne · __CURRENCY__</div>
+<!-- meta-ads-checklist skill · by Radosław Kmita + Hubert (MTA Digital) · free to use, MIT · github: meta-ads-verification-opensource-by-rado-kmita -->
+</body></html>
