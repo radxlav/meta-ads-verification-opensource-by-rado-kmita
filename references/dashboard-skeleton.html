@@ -1,110 +1,326 @@
 <!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>__CLIENT__ — Meta Ads Simple Dash</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hyperformula@2.6.2/dist/hyperformula.full.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@13.1.0/dist/handsontable.full.min.css">
 <script src="https://cdn.jsdelivr.net/npm/handsontable@13.1.0/dist/handsontable.full.min.js"></script>
 <style>
-:root{--coral:#e85d5d;--coral2:#f08080;--cream:#f5efe6;--dark:#1a1a1a;--mid:#444;--muted:#888;--border:#e5e0d8;--green-bg:#eafaf1;--r:12px;--sh:0 2px 12px rgba(0,0,0,.07)}
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark)}
-header{background:var(--dark);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.logo{background:var(--coral);color:#fff;font-weight:800;font-size:12px;padding:3px 9px;border-radius:5px}
-.h-title{font-size:16px;font-weight:700;margin-left:10px}.h-sub{font-size:12px;color:#aaa;margin-left:8px}
-.h-right{text-align:right;font-size:11px;color:#aaa}.h-right strong{color:#f5a0a0;display:block}
-.tabs{background:#fff;border-bottom:1px solid var(--border);padding:0 16px;display:flex;gap:2px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
-.tab{padding:11px 13px;font-size:12px;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer}
-.tab:hover{color:var(--coral)}.tab.active{color:var(--coral);border-bottom-color:var(--coral)}
-main{max-width:100%;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.card-hdr{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.card-ttl{font-size:14px;font-weight:700}.card-hdr .sub{font-size:11px;color:var(--muted)}
+/* ── DARK EDITORIAL ANALYTICS — Meta Ads Simple Dash ── */
+:root{
+  --coral:#ff6666;--coral2:#ff8e8e;--coral-dim:rgba(255,102,102,.12);--coral-glow:rgba(255,102,102,.22);
+  --bg:#0b0d14;--surface:#13161f;--surface2:#191d2b;--surface3:#202436;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:#e4e7f3;--muted:#5e6580;--muted2:#8e96b5;
+  --dark:#0b0d14;--mid:#8e96b5;--green-bg:rgba(34,197,94,.1);
+  --r:10px;--sh:0 4px 24px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 80% 45% at 50% -5%,rgba(255,102,102,.055) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 25% at 92% 85%,rgba(99,102,241,.04) 0%,transparent 55%);
+}
+
+/* ─── HEADER ─── */
+header{
+  background:linear-gradient(135deg,#0b0d14 0%,#13161f 100%);
+  color:#fff;padding:18px 28px;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+header::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(255,102,102,.04) 0%,transparent 45%);
+  pointer-events:none;
+}
+.logo{
+  background:var(--coral);color:#fff;font-family:'Syne',sans-serif;
+  font-weight:800;font-size:11px;letter-spacing:.5px;
+  padding:4px 10px;border-radius:6px;
+  box-shadow:0 0 18px var(--coral-glow);
+  position:relative;z-index:1;
+}
+.h-title{
+  font-family:'Syne',sans-serif;font-size:17px;font-weight:700;
+  margin-left:12px;color:#fff;letter-spacing:-.25px;position:relative;z-index:1;
+}
+.h-sub{font-size:11.5px;color:var(--muted2);margin-left:10px;z-index:1;position:relative}
+.h-right{text-align:right;font-size:11px;color:var(--muted2);z-index:1;position:relative}
+.h-right strong{color:var(--coral2);display:block;font-size:12px}
+
+/* ─── TABS ─── */
+.tabs{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 20px;display:flex;gap:0;flex-wrap:wrap;
+  position:sticky;top:0;z-index:10;overflow-x:auto;
+}
+.tabs::-webkit-scrollbar{height:3px}
+.tabs::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px}
+.tab{
+  padding:13px 16px;font-size:11.5px;font-weight:600;color:var(--muted);
+  background:none;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;white-space:nowrap;transition:all .18s ease;
+}
+.tab:hover{color:var(--coral);background:rgba(255,102,102,.05)}
+.tab.active{color:var(--coral);border-bottom-color:var(--coral);background:rgba(255,102,102,.07)}
+
+/* ─── MAIN ─── */
+main{max-width:100%;margin:0 auto;padding:18px}
+.card{
+  background:var(--surface);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--sh);
+  overflow:hidden;transition:box-shadow .2s ease;
+}
+.card:hover{box-shadow:0 8px 40px rgba(0,0,0,.55)}
+.card-hdr{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  background:linear-gradient(90deg,rgba(255,102,102,.04) 0%,transparent 45%);
+}
+.card-ttl{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px}
+.card-hdr .sub{font-size:11px;color:var(--muted)}
+
+/* ─── TABLES ─── */
 .tbl-scroll{max-height:74vh;overflow:auto}
+.tbl-scroll::-webkit-scrollbar{width:5px;height:5px}
+.tbl-scroll::-webkit-scrollbar-track{background:var(--surface)}
+.tbl-scroll::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+.tbl-scroll::-webkit-scrollbar-thumb:hover{background:rgba(255,102,102,.3)}
+
 table.dt{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}
-table.dt th{text-align:right;padding:7px 9px;font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);background:#faf8f5;border-bottom:1px solid var(--border);position:sticky;top:0;cursor:pointer}
+table.dt th{
+  text-align:right;padding:8px 10px;font-size:9px;font-weight:700;
+  letter-spacing:.65px;text-transform:uppercase;color:var(--muted);
+  background:var(--surface2);border-bottom:1px solid var(--border2);
+  position:sticky;top:0;cursor:pointer;
+}
 table.dt th.l,table.dt td.l{text-align:left}
-table.dt td{padding:6px 9px;border-bottom:1px solid #f0ece6;text-align:right;font-variant-numeric:tabular-nums}
-table.dt tr:hover td{background:#fdfaf7}
-.tr-total td{font-weight:700;background:#fdf5f5;border-top:2px solid var(--coral2);position:sticky;bottom:0}
+table.dt td{
+  padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);
+  text-align:right;font-family:'DM Mono',monospace;font-size:11px;
+  font-variant-numeric:tabular-nums;color:var(--text);
+}
+table.dt tr:hover td{background:rgba(255,255,255,.03)}
+.tr-total td{
+  font-weight:700;font-family:'DM Mono',monospace;
+  background:rgba(255,102,102,.09);border-top:1px solid rgba(255,102,102,.28);
+  color:var(--coral2);position:sticky;bottom:0;
+}
+.tr-total td.l{font-family:'DM Sans',sans-serif}
+
+/* ─── MISC ─── */
 .qa-link{font-size:11px;font-weight:700;color:var(--coral);text-decoration:none}
-.note{font-size:11px;color:var(--muted);padding:10px 18px}
+.qa-link:hover{text-decoration:underline;color:var(--coral2)}
+.note{font-size:11px;color:var(--muted2);padding:10px 20px;line-height:1.5}
 details.exp{margin:0}
 details.exp>summary{cursor:pointer;font-size:10px;color:var(--coral);font-weight:600;list-style:none;user-select:none;display:inline-flex;align-items:center;gap:4px}
 details.exp>summary::-webkit-details-marker{display:none}
 details.exp>summary::before{content:'▸';color:var(--muted);font-size:9px}
 details.exp[open]>summary::before{content:'▾'}
 details.exp>summary:hover{text-decoration:underline}
-details.exp .exp-body{margin-top:5px;font-weight:400;color:var(--muted)}
-.idx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:16px 18px}
-.idx-card{display:flex;flex-direction:column;gap:5px;text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;font-family:inherit;transition:transform .16s cubic-bezier(.2,.8,.2,1),box-shadow .16s,border-color .16s}
-.idx-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(232,93,93,.13);border-color:var(--coral2)}
-.idx-card:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
-.idx-t{font-size:13px;font-weight:700;color:var(--dark)}
-.idx-d{font-size:11px;color:var(--muted);line-height:1.45}
-.fx-bar{display:flex;align-items:center;gap:8px;padding:6px 16px;background:#fbf8f3;border-bottom:1px solid var(--border)}
-.fx-bar .fx-lbl{font-family:Georgia,serif;font-style:italic;font-weight:700;color:var(--coral);font-size:13px}
-.fx-bar .fx-cell{font-size:10px;font-weight:700;color:var(--mid);min-width:130px}
-.fx-input{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#fff;color:#555;outline:none}
-.fx-input.isformula{color:#16794a;font-weight:600}
-.card{transition:box-shadow .16s cubic-bezier(.2,.8,.2,1)}
-.tab,.attrbtn,.sheet-btn,.gs-tab,.qa-link,.cell-lnk{transition:all .15s cubic-bezier(.2,.8,.2,1)}
-.tab:focus-visible,.attrbtn:focus-visible,button:focus-visible{outline:2px solid var(--coral);outline-offset:1px}
-table.dt td,table.dt th{font-variant-numeric:tabular-nums}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-.src{font-size:10px;color:var(--muted);text-align:center;padding:12px}
+details.exp .exp-body{margin-top:5px;font-weight:400;color:var(--muted2)}
 
-.sheet-bar{padding:9px 16px;border-bottom:1px solid var(--border);background:#fdfbf9;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.sheet-btn{font-size:10px;font-weight:600;padding:4px 9px;border-radius:5px;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--mid)}
-.sheet-btn:hover{border-color:var(--coral)}
+/* ─── INDEX CARDS ─── */
+.idx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;padding:20px}
+.idx-card{
+  display:flex;flex-direction:column;gap:7px;text-align:left;
+  background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  padding:16px 18px;cursor:pointer;font-family:inherit;
+  transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,border-color .2s;
+  position:relative;overflow:hidden;
+}
+.idx-card::before{
+  content:'';position:absolute;top:-40px;left:-20px;width:90px;height:90px;
+  background:radial-gradient(circle,rgba(255,102,102,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.idx-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.5),0 0 0 1px rgba(255,102,102,.2);
+  border-color:rgba(255,102,102,.35);
+}
+.idx-card:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+.idx-t{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
+.idx-d{font-size:11px;color:var(--muted2);line-height:1.5}
+
+/* ─── FORMULA BAR ─── */
+.fx-bar{
+  display:flex;align-items:center;gap:8px;padding:7px 18px;
+  background:var(--surface2);border-bottom:1px solid var(--border);
+}
+.fx-bar .fx-lbl{font-family:'Syne',sans-serif;font-weight:800;color:var(--coral);font-size:13px}
+.fx-bar .fx-cell{font-size:10px;font-weight:700;color:var(--muted2);min-width:130px}
+.fx-input{
+  flex:1;border:1px solid var(--border2);border-radius:6px;
+  padding:5px 10px;font-family:'DM Mono',monospace;font-size:11px;
+  background:var(--surface3);color:var(--muted2);outline:none;
+}
+.fx-input.isformula{color:#4ade80;font-weight:600}
+
+/* ─── SHEET / TABS ─── */
+.sheet-bar{
+  padding:10px 18px;border-bottom:1px solid var(--border);
+  background:var(--surface2);display:flex;gap:6px;align-items:center;flex-wrap:wrap;
+}
+.sheet-btn{
+  font-size:10px;font-weight:600;padding:4px 10px;border-radius:5px;
+  cursor:pointer;border:1px solid var(--border2);background:var(--surface3);
+  color:var(--muted2);transition:all .15s ease;
+}
+.sheet-btn:hover{border-color:var(--coral);color:var(--coral)}
 .sheet-btn.active{background:var(--coral);color:#fff;border-color:var(--coral)}
-.sheet-btn.ph{color:#b3a89a;font-style:italic}
-.sheet-act{font-size:10px;font-weight:600;padding:4px 9px;border-radius:5px;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--mid)}
+.sheet-btn.ph{color:var(--muted);font-style:italic}
+.sheet-act{
+  font-size:10px;font-weight:600;padding:4px 10px;border-radius:5px;
+  cursor:pointer;border:1px solid var(--border2);background:var(--surface3);color:var(--muted2);
+}
 .sh-pane{display:none}.sh-pane.active{display:block}
 .hot-host{height:60vh;overflow:hidden;border-bottom:1px solid var(--border)}
 .ph-pane{padding:40px 24px;text-align:center;color:var(--muted);font-size:13px}
 .ph-pane b{color:var(--coral)}
-.gs-tabbar{display:flex;align-items:center;background:#f3eee2;border-top:1px solid var(--border);padding:0 8px;flex-wrap:wrap;min-height:30px}
-.gs-tab{background:transparent;border:0;border-right:1px solid var(--border);font-size:10.5px;font-weight:600;color:var(--mid);padding:6px 11px;cursor:pointer;border-top:2px solid transparent}
-.gs-tab:hover{background:#ebe5d5}.gs-tab.active{background:#fff;color:var(--dark);border-top-color:var(--coral)}
-.gs-tab.ph{color:#b3a89a;font-style:italic}
-.cmt{font-size:10px;color:#6b5b00;background:#fffbe6;border-left:3px solid #f0c000;padding:3px 7px;border-radius:3px;display:block;max-width:320px;white-space:normal;margin-top:3px}
-.cell-lnk{font-size:10px;font-weight:700;color:#2563eb;text-decoration:none;white-space:nowrap;cursor:pointer}
-.cell-lnk:hover{text-decoration:underline}
+.gs-tabbar{
+  display:flex;align-items:center;background:var(--surface2);
+  border-top:1px solid var(--border);padding:0 8px;flex-wrap:wrap;min-height:30px;
+}
+.gs-tab{
+  background:transparent;border:0;border-right:1px solid var(--border);
+  font-size:10.5px;font-weight:600;color:var(--muted);padding:7px 13px;
+  cursor:pointer;border-top:2px solid transparent;transition:all .15s ease;
+}
+.gs-tab:hover{background:rgba(255,255,255,.04);color:var(--muted2)}
+.gs-tab.active{background:var(--surface);color:var(--text);border-top-color:var(--coral)}
+.gs-tab.ph{color:var(--muted);font-style:italic}
+
+/* ─── MISC UI ─── */
+.cmt{
+  font-size:10px;color:#e9c84a;background:rgba(240,192,0,.12);
+  border-left:3px solid #f0c000;padding:3px 7px;border-radius:3px;
+  display:block;max-width:320px;white-space:normal;margin-top:3px;
+}
+.cell-lnk{
+  font-size:10px;font-weight:700;color:#60a5fa;text-decoration:none;
+  white-space:nowrap;cursor:pointer;transition:color .15s ease;
+}
+.cell-lnk:hover{color:#93c5fd;text-decoration:underline}
 tr.flash td{animation:flashrow 2.2s ease-out}
-@keyframes flashrow{0%{background:#fff3cd}60%{background:#fff3cd}100%{background:transparent}}
-#chart-tip{position:fixed;display:none;pointer-events:none;z-index:9999;background:#1a1a1a;color:#fff;font-size:11px;font-weight:500;padding:6px 10px;border-radius:7px;box-shadow:0 3px 14px rgba(0,0,0,.28);max-width:300px;line-height:1.45;white-space:pre-line}
+@keyframes flashrow{0%{background:rgba(240,192,0,.2)}60%{background:rgba(240,192,0,.15)}100%{background:transparent}}
+
+/* ─── CHART TOOLTIP ─── */
+#chart-tip{
+  position:fixed;display:none;pointer-events:none;z-index:9999;
+  background:var(--surface);color:var(--text);font-size:11px;font-weight:500;
+  padding:8px 12px;border-radius:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,.65),0 0 0 1px var(--border2);
+  max-width:300px;line-height:1.5;white-space:pre-line;
+  border-left:3px solid var(--coral);
+}
 svg rect,svg circle{cursor:crosshair}
-.attrbar{background:#1a1a1a;border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.attrbar .albl{font-size:11px;color:#bbb;font-weight:600;margin-right:4px}
-.attrbtn{font-size:11px;font-weight:700;padding:5px 13px;border-radius:6px;cursor:pointer;border:1px solid #444;background:#262626;color:#ddd}
-.attrbtn:hover{border-color:var(--coral)}
-.attrbtn.on{background:var(--coral);color:#fff;border-color:var(--coral)}
-.attrbar .asum{margin-left:auto;font-size:11px;color:#ccc}.attrbar .asum b{color:#f5a0a0}
-.pos{color:#16794a;font-weight:700}.neg{color:#c0392b;font-weight:700}.warnv{color:#b8860b;font-weight:700}
-.st-ok{background:#eafaf1;color:#16794a;font-weight:700;border-radius:4px;padding:1px 5px}
-.st-warn{background:#fff6e6;color:#b8860b;font-weight:700;border-radius:4px;padding:1px 5px}
-.st-todo{background:#eef2ff;color:#3949ab;font-weight:700;border-radius:4px;padding:1px 5px}
-.st-no{background:#fdecea;color:#c0392b;font-weight:700;border-radius:4px;padding:1px 5px}
+
+/* ─── ATTRIBUTION BAR ─── */
+.attrbar{
+  background:var(--surface2);border-bottom:1px solid var(--border);
+  padding:9px 18px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+}
+.attrbar .albl{font-size:11px;color:var(--muted2);font-weight:600;margin-right:4px}
+.attrbtn{
+  font-size:11px;font-weight:700;padding:5px 14px;border-radius:6px;
+  cursor:pointer;border:1px solid var(--border2);background:var(--surface3);
+  color:var(--muted2);transition:all .15s ease;
+}
+.attrbtn:hover{border-color:var(--coral);color:var(--coral)}
+.attrbtn.on{background:var(--coral);color:#fff;border-color:var(--coral);box-shadow:0 0 14px var(--coral-glow)}
+.attrbar .asum{margin-left:auto;font-size:11px;color:var(--muted2)}
+.attrbar .asum b{color:var(--coral2)}
+
+/* ─── STATUS / NUMBERS ─── */
+.pos{color:#4ade80;font-weight:700}
+.neg{color:var(--coral);font-weight:700}
+.warnv{color:#fbbf24;font-weight:700}
+.st-ok{background:rgba(74,222,128,.12);color:#4ade80;font-weight:700;border-radius:4px;padding:2px 6px}
+.st-warn{background:rgba(251,191,36,.12);color:#fbbf24;font-weight:700;border-radius:4px;padding:2px 6px}
+.st-todo{background:rgba(129,140,248,.12);color:#818cf8;font-weight:700;border-radius:4px;padding:2px 6px}
+.st-no{background:rgba(255,102,102,.12);color:var(--coral);font-weight:700;border-radius:4px;padding:2px 6px}
 .attr-card{margin-bottom:14px}
 .attr-grid th.win{text-align:center;border-left:1px solid var(--border)}
-.score-hero{display:flex;align-items:center;gap:22px;padding:22px;flex-wrap:wrap}
-.score-big{font-size:54px;font-weight:800;color:var(--coral);line-height:1}
-.score-sub{font-size:12px;color:var(--mid);max-width:640px}
-.score-bar{height:9px;background:#eee;border-radius:5px;overflow:hidden;width:120px;margin-top:5px}
-.score-bar i{display:block;height:100%;background:var(--coral)}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:16px 18px}
-.kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-.kpi .lab{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
-.kpi .val{font-size:23px;font-weight:800;margin:4px 0 2px}
-.kpi .src{font-size:9.5px;color:var(--muted);text-align:left;padding:0}
-.sig{display:flex;gap:9px;align-items:flex-start;padding:9px 18px;border-top:1px solid #f0ece6}
-.sig .dot{font-size:13px;line-height:1.3}
-.sig .txt{font-size:12px}.sig .txt b{color:var(--dark)}
-.prov th,.prov td{font-size:10.5px}
-.tag-p{background:#e7f0ff;color:#1d4ed8;font-weight:700;border-radius:3px;padding:1px 4px;font-size:9px}
-.tag-s{background:#fdecea;color:#c0392b;font-weight:700;border-radius:3px;padding:1px 4px;font-size:9px}
-.tag-c{background:#eafaf1;color:#16794a;font-weight:700;border-radius:3px;padding:1px 4px;font-size:9px}
-.how{background:#f0f7ff;border-left:3px solid #2563eb;padding:8px 12px;font-size:11px;color:#274690;border-radius:0 4px 4px 0;margin:0 0 0 0}
 
+/* ─── SCORE / KPI ─── */
+.score-hero{
+  display:flex;align-items:center;gap:22px;padding:24px;flex-wrap:wrap;
+  background:linear-gradient(135deg,rgba(255,102,102,.05) 0%,transparent 55%);
+}
+.score-big{
+  font-family:'Syne',sans-serif;font-size:56px;font-weight:800;
+  color:var(--coral);line-height:1;text-shadow:0 0 40px var(--coral-glow);
+}
+.score-sub{font-size:12px;color:var(--muted2);max-width:640px;line-height:1.5}
+.score-bar{height:8px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden;width:120px;margin-top:6px}
+.score-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--coral),var(--coral2));border-radius:5px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;padding:18px}
+.kpi{
+  background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;transition:transform .18s ease,border-color .18s ease;
+}
+.kpi:hover{transform:translateY(-1px);border-color:rgba(255,102,102,.25)}
+.kpi .lab{font-size:9.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:700}
+.kpi .val{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin:5px 0 3px;color:var(--text)}
+.kpi .src{font-size:9px;color:var(--muted);text-align:left;padding:0}
+
+.sig{display:flex;gap:10px;align-items:flex-start;padding:10px 20px;border-top:1px solid rgba(255,255,255,.04)}
+.sig .dot{font-size:13px;line-height:1.35}
+.sig .txt{font-size:12px;color:var(--muted2)}.sig .txt b{color:var(--text)}
+
+/* ─── PROV / SOURCE ─── */
+.prov th,.prov td{font-size:10.5px}
+.tag-p{background:rgba(37,99,235,.18);color:#60a5fa;font-weight:700;border-radius:3px;padding:1px 5px;font-size:9px}
+.tag-s{background:rgba(255,102,102,.15);color:var(--coral2);font-weight:700;border-radius:3px;padding:1px 5px;font-size:9px}
+.tag-c{background:rgba(74,222,128,.15);color:#4ade80;font-weight:700;border-radius:3px;padding:1px 5px;font-size:9px}
+.how{
+  background:rgba(37,99,235,.1);border-left:3px solid #3b82f6;
+  padding:9px 13px;font-size:11px;color:#93c5fd;
+  border-radius:0 5px 5px 0;line-height:1.5;
+}
+.src{font-size:10px;color:var(--muted);text-align:center;padding:14px}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,102,102,.3)}
+
+/* ─── HANDSONTABLE DARK OVERRIDES ─── */
+.handsontable,.handsontable td,.handsontable th,
+.handsontable .wtBorder,.handsontable .wtSpreader,
+.handsontable .ht_master .wtHolder,
+.handsontable table.htCore{background:var(--surface)!important;color:var(--text)!important}
+.handsontable td{border-color:var(--border2)!important;font-family:'DM Mono',monospace!important;font-size:11px!important}
+.handsontable th{background:var(--surface2)!important;color:var(--muted2)!important;border-color:var(--border2)!important;font-family:'DM Sans',sans-serif!important;font-size:10px!important}
+.handsontable .htColumnHeaders{background:var(--surface2)!important}
+.handsontable .ht_clone_top .htCore th,.handsontable .ht_clone_left .htCore th{background:var(--surface2)!important;color:var(--muted2)!important}
+.handsontable .current td,.handsontable .currentRow td{background:rgba(255,102,102,.06)!important}
+.handsontable .htAutocompleteArrow{color:var(--muted2)!important}
+.handsontable .htDimmed{color:var(--muted)!important}
+.htContextMenu table.htCore{background:var(--surface2)!important}
+.htContextMenu table.htCore td{color:var(--text)!important}
+
+/* ─── CHART CONTROLS / FILTER ─── */
+.cbar{padding:9px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--surface2)}
+.clbl{font-size:9px;color:var(--muted);margin-left:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+.cbtn{font-family:inherit;font-size:10.5px;font-weight:500;padding:4px 11px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surface3);color:var(--muted2);transition:all .15s cubic-bezier(.2,.8,.2,1)}
+.cbtn:hover{border-color:rgba(255,102,102,.45);color:var(--coral2)}
+.cbtn.on{background:rgba(255,102,102,.16);border-color:var(--coral);color:var(--coral2);font-weight:700;box-shadow:0 0 10px rgba(255,102,102,.12)}
+.cbtn.dis{opacity:.38;cursor:not-allowed}
+.cbtn.tgl{background:var(--coral);color:#fff;border-color:var(--coral);font-weight:700;box-shadow:0 0 14px var(--coral-glow)}
+.flt-inp{border:1px solid var(--border2);border-radius:7px;padding:5px 12px;font-size:11px;font-family:inherit;width:240px;outline:none;background:var(--surface3);color:var(--text);transition:border-color .15s ease,box-shadow .15s ease}
+.flt-inp::placeholder{color:var(--muted)}
+.flt-inp:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(255,102,102,.12)}
+
+/* ─── FOCUS / MOTION ─── */
+.card{transition:box-shadow .2s cubic-bezier(.2,.8,.2,1)}
+.tab,.attrbtn,.sheet-btn,.gs-tab,.qa-link,.cell-lnk{transition:all .15s cubic-bezier(.2,.8,.2,1)}
+.tab:focus-visible,.attrbtn:focus-visible,button:focus-visible{outline:2px solid var(--coral);outline-offset:1px}
+table.dt td,table.dt th{font-variant-numeric:tabular-nums}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head><body>
 <header><div style="display:flex;align-items:center;flex-wrap:wrap"><span class="h-title">__AGENCY__ × __CLIENT__</span><span class="h-sub">Meta Ads — Simple Dash</span></div>
 <div class="h-right"><strong>waluta __CURRENCY__ · konto __CLIENT__</strong>__PERIOD__ · ad-level · Dataslayer read-only · 3 okna atrybucji · 2026-06-09</div></header>
@@ -193,7 +409,7 @@ function dimValue(r,by){
 const FLDS=['cost','val','pur','impr','clicks','atc','ic','reach'];
 function metricVal(o,m){return m==='roas'?(o.cost>0?o.val/o.cost:0):(o[m]||0);}
 function fmtMetric(v,m){return m==='roas'?v.toFixed(2):(m==='cost'||m==='val'?fN(v)+' zł':fN(v));}
-const PALETTE=['#e85d5d','#f0a04b','#5b8def','#3fb98c','#9b6dd6','#e0c341','#8a8f99','#d96fa6'];
+const PALETTE=['var(--coral)','#f0a04b','#5b8def','#3fb98c','#9b6dd6','#e0c341','#8a8f99','#d96fa6'];
 function groupBy(rows,by){const m={};rows.forEach(r=>{const k=dimValue(r,by)||'(brak)';if(!m[k]){m[k]={};FLDS.forEach(f=>m[k][f]=0);}FLDS.forEach(f=>m[k][f]+=(r[f]||0));});return m;}
 // kept for back-compat (rollup chart prev caller)
 function aggBy(rows,by){const m=groupBy(rows,by);const a=Object.keys(m).map(k=>Object.assign({_k:k},m[k]));a.forEach(g=>g.roas=g.cost>0?g.val/g.cost:0);return a.sort((x,y)=>(y.cost||0)-(x.cost||0));}
@@ -203,13 +419,16 @@ function svgBarH(rows,by,metric){
  if(!arr.length)return '<p style="padding:12px;font-size:12px;color:var(--muted)">Brak danych</p>';
  const isCat=(by==='date'||by==='yw'||by==='ym'||by==='strat'||by.indexOf('tag:')===0);
  const maxV=Math.max(...arr.map(x=>x.v),1e-9);
- const BH=24,GAP=5,PL=210,PR=78,PT=8,W=940,H=PT+arr.length*(BH+GAP)+4;
+ const BH=26,GAP=8,PL=232,PR=92,PT=10,W=940,H=PT+arr.length*(BH+GAP)+6;
+ const trackW=W-PL-PR;
  let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:1040px;height:auto;display:block;margin:0 auto">`;
- arr.forEach((x,i)=>{const bw=Math.max(2,(x.v/maxV)*(W-PL-PR));const y=PT+i*(BH+GAP);
-  const lbl=(isCat?String(x.k):cleanLabel(x.k)).slice(0,34);const vf=fmtMetric(x.v,metric);
-  s+=`<rect x="${PL}" y="${y}" width="${bw.toFixed(1)}" height="${BH}" fill="#e85d5d" rx="3" opacity="0.82"><title>${esc(x.k)}: ${vf}</title></rect>`;
-  s+=`<text x="${PL-5}" y="${(y+BH*0.67).toFixed(1)}" text-anchor="end" font-size="9.5" fill="#555">${esc(lbl)}</text>`;
-  s+=`<text x="${(PL+bw+5).toFixed(1)}" y="${(y+BH*0.67).toFixed(1)}" font-size="9" fill="#888">${vf}</text>`;});
+ s+=`<defs><linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff5b6e"/><stop offset="1" stop-color="#ff9a76"/></linearGradient></defs>`;
+ arr.forEach((x,i)=>{const bw=Math.max(3,(x.v/maxV)*trackW);const y=PT+i*(BH+GAP);
+  const lbl=(isCat?String(x.k):cleanLabel(x.k)).slice(0,38);const vf=fmtMetric(x.v,metric);
+  s+=`<rect x="${PL}" y="${y}" width="${trackW}" height="${BH}" rx="5" fill="rgba(255,255,255,.06)"/>`;
+  s+=`<rect x="${PL}" y="${y}" width="${bw.toFixed(1)}" height="${BH}" rx="5" fill="url(#barGrad)"><title>${esc(x.k)}: ${vf}</title></rect>`;
+  s+=`<text x="${PL-9}" y="${(y+BH*0.66).toFixed(1)}" text-anchor="end" font-size="11" font-family="'DM Mono',monospace" fill="#9aa3c2">${esc(lbl)}</text>`;
+  s+=`<text x="${(PL+bw+8).toFixed(1)}" y="${(y+BH*0.66).toFixed(1)}" font-size="11" font-weight="600" fill="#ffb38f">${vf}</text>`;});
  return s+'</svg>';
 }
 function timeSeries(rows,xKey,byDim,metric){
@@ -225,12 +444,12 @@ function timeSeries(rows,xKey,byDim,metric){
  return {xs,series:rest.length?keep.concat(['Pozostałe']):keep,matrix};
 }
 function legend(series){return '<div style="display:flex;flex-wrap:wrap;gap:9px;padding:4px 18px 8px">'+series.map((nm,i)=>`<span style="font-size:9.5px;color:#555;display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:2px;background:${PALETTE[i%PALETTE.length]};display:inline-block"></span>${esc(String(nm).slice(0,24))}</span>`).join('')+'</div>';}
-function xticks(xs,PL,gap,bottom){const n=xs.length,step=Math.ceil(n/12)||1;let s='';xs.forEach((x,i)=>{if(i%step&&i!==n-1)return;const px=PL+i*gap+gap/2;const lab=String(x).length>5?String(x).slice(5):String(x);s+=`<text x="${px.toFixed(1)}" y="${bottom}" font-size="8" fill="#999" text-anchor="middle">${esc(lab)}</text>`;});return s;}
+function xticks(xs,PL,gap,bottom){const n=xs.length,step=Math.ceil(n/12)||1;let s='';xs.forEach((x,i)=>{if(i%step&&i!==n-1)return;const px=PL+i*gap+gap/2;const lab=String(x).length>5?String(x).slice(5):String(x);s+=`<text x="${px.toFixed(1)}" y="${bottom}" font-size="9.5" fill="#8e96b5" text-anchor="middle">${esc(lab)}</text>`;});return s;}
 function ovSeries(rows,xKey,xs){const m={};rows.forEach(r=>{const x=dimValue(r,xKey);if(!x)return;m[x]=m[x]||{cost:0,val:0,pur:0};m[x].cost+=(r.cost||0);m[x].val+=(r.val||0);m[x].pur+=(r.pur||0);});return xs.map(x=>{const o=m[x]||{cost:0,val:0,pur:0};return chrt.ov==='cpa'?(o.pur?o.cost/o.pur:0):(o.cost?o.val/o.cost:0);});}
 function ovDraw(rows,xKey,xs,xpos,PT,plotH,W,PR){
  if(!chrt.ov||chrt.ov==='none')return '';
  const vals=ovSeries(rows,xKey,xs);const maxV=Math.max(...vals.filter(v=>isFinite(v)),1e-9);
- const py=v=>PT+(1-(v/maxV))*plotH,C='#111',lab=chrt.ov==='cpa'?'CPA':'ROAS',fmt=v=>chrt.ov==='cpa'?fN(v)+' zł':v.toFixed(2);
+ const py=v=>PT+(1-(v/maxV))*plotH,C='#ff6666',lab=chrt.ov==='cpa'?'CPA':'ROAS',fmt=v=>chrt.ov==='cpa'?fN(v)+' zł':v.toFixed(2);
  let s=`<polyline points="${xs.map((x,i)=>xpos(i).toFixed(1)+','+py(vals[i]).toFixed(1)).join(' ')}" fill="none" stroke="${C}" stroke-width="2"/>`;
  xs.forEach((x,i)=>{s+=`<circle cx="${xpos(i).toFixed(1)}" cy="${py(vals[i]).toFixed(1)}" r="2.8" fill="${C}" stroke="#fff" stroke-width="1"><title>${esc(x)} · ${lab}: ${fmt(vals[i])}</title></circle>`;});
  [maxV/2,maxV].forEach(t=>{s+=`<text x="${(W-PR+3)}" y="${(py(t)+3).toFixed(1)}" font-size="8" fill="${C}">${fmt(t)}</text>`;});
@@ -241,7 +460,7 @@ function svgStack100(rows,xKey,byDim,metric){
  if(!xs.length)return '<p style="padding:12px;font-size:12px;color:var(--muted)">Brak danych</p>';
  const W=1600,PL=44,PR=46,PT=10,PB=28,H=320,plotH=H-PT-PB,n=xs.length,gap=(W-PL-PR)/n,cw=Math.min(54,gap*0.8);
  let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:${W}px;height:auto;display:block;margin:0 auto">`;
- [0,.25,.5,.75,1].forEach(g=>{const y=PT+(1-g)*plotH;s+=`<line x1="${PL}" y1="${y.toFixed(1)}" x2="${W-PR}" y2="${y.toFixed(1)}" stroke="#eee"/><text x="2" y="${(y+3).toFixed(1)}" font-size="8" fill="#bbb">${g*100|0}%</text>`;});
+ [0,.25,.5,.75,1].forEach(g=>{const y=PT+(1-g)*plotH;s+=`<line x1="${PL}" y1="${y.toFixed(1)}" x2="${W-PR}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,.1)"/><text x="2" y="${(y+3).toFixed(1)}" font-size="8" fill="#6e7690">${g*100|0}%</text>`;});
  xs.forEach((x,i)=>{const cx=PL+i*gap+gap/2-cw/2;const tot=series.reduce((a,nm)=>a+(matrix[x][nm]||0),0)||1;let acc=0;
   series.forEach((nm,si)=>{const v=matrix[x][nm]||0,frac=v/tot,bh=frac*plotH,y=PT+(plotH-acc-bh);acc+=bh;
    if(frac>0.0015)s+=`<rect x="${cx.toFixed(1)}" y="${y.toFixed(1)}" width="${cw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${PALETTE[si%PALETTE.length]}" opacity="0.9"><title>${esc(x)} · ${esc(nm)}: ${(frac*100).toFixed(1)}% (${fmtMetric(v,metric)})</title></rect>`;});});
@@ -256,34 +475,31 @@ function svgTrend(rows,xKey,byDim,metric){
  let maxV=0;xs.forEach(x=>series.forEach(nm=>maxV=Math.max(maxV,matrix[x][nm]||0)));maxV=maxV||1;
  const px=i=>PL+(n<2?0:i*(W-PL-PR)/(n-1)),py=v=>PT+(1-v/maxV)*plotH,gap=(W-PL-PR)/n;
  let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:${W}px;height:auto;display:block;margin:0 auto">`;
- [0,.5,1].forEach(g=>{const y=PT+(1-g)*plotH;s+=`<line x1="${PL}" y1="${y.toFixed(1)}" x2="${W-PR}" y2="${y.toFixed(1)}" stroke="#eee"/><text x="2" y="${(y+3).toFixed(1)}" font-size="8" fill="#bbb">${fN(maxV*g)}</text>`;});
+ [0,.5,1].forEach(g=>{const y=PT+(1-g)*plotH;s+=`<line x1="${PL}" y1="${y.toFixed(1)}" x2="${W-PR}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,.1)"/><text x="2" y="${(y+3).toFixed(1)}" font-size="8" fill="#6e7690">${fN(maxV*g)}</text>`;});
  series.forEach((nm,si)=>{const pts=xs.map((x,i)=>`${px(i).toFixed(1)},${py(matrix[x][nm]||0).toFixed(1)}`).join(' ');s+=`<polyline points="${pts}" fill="none" stroke="${PALETTE[si%PALETTE.length]}" stroke-width="2"/>`;});
  s+=ovDraw(rows,xKey,xs,px,PT,plotH,W,PR);
- xs.forEach((x,i)=>{if(i%(Math.ceil(n/12)||1)&&i!==n-1)return;const lab=String(x).length>5?String(x).slice(5):String(x);s+=`<text x="${px(i).toFixed(1)}" y="${H-8}" font-size="8" fill="#999" text-anchor="middle">${esc(lab)}</text>`;});
+ xs.forEach((x,i)=>{if(i%(Math.ceil(n/12)||1)&&i!==n-1)return;const lab=String(x).length>5?String(x).slice(5):String(x);s+=`<text x="${px(i).toFixed(1)}" y="${H-8}" font-size="9.5" fill="#8e96b5" text-anchor="middle">${esc(lab)}</text>`;});
  return legend(series)+s+'</svg>';
 }
 function chartPanel(rows,isRaw){
- const bS='font-family:inherit;font-size:10px;padding:3px 8px;border-radius:5px;cursor:pointer;border:1px solid var(--border);background:none';
- const sS=';background:#fce8e8;border-color:#e85d5d;font-weight:600';
- const btn=(act,oc,lbl)=>`<button style="${bS}${act?sS:''}" onclick="${oc}">${lbl}</button>`;
+ const btn=(act,oc,lbl)=>`<button class="cbtn${act?' on':''}" onclick="${oc}">${lbl}</button>`;
  if(!isRaw&&(chrt.by==='date'||chrt.by==='yw'||chrt.by==='ym'))chrt.by='camp';
  if(!isRaw&&chrt.type!=='bar')chrt.type='bar';
- let h=`<div style="padding:7px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:5px;flex-wrap:wrap;background:#fdfbf9">`;
- h+=btn(chrt.vis,"chrt.vis=!chrt.vis;draw()",(chrt.vis?'▼':'▶')+' Wykres');
+ let h=`<div class="cbar">`;
+ h+=`<button class="cbtn${chrt.vis?' tgl':''}" onclick="chrt.vis=!chrt.vis;draw()">${(chrt.vis?'▼':'▶')+' Wykres'}</button>`;
  if(chrt.vis){
-  h+='<span style="font-size:10px;color:var(--muted);margin-left:6px">Typ:</span>';
+  h+='<span class="clbl">Typ:</span>';
   (isRaw?[['bar','Słupki'],['trend','Trend w czasie'],['stack','Stacked 100%']]:[['bar','Słupki']]).forEach(t=>h+=btn(chrt.type===t[0],`chrt.type='${t[0]}';draw()`,t[1]));
-  h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Metryka:</span>';
+  h+='<span class="clbl">Metryka:</span>';
   MDEF.forEach(m=>h+=btn(chrt.metric===m.k,`chrt.metric='${m.k}';draw()`,m.l));
-  h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Wymiar:</span>';
+  h+='<span class="clbl">Wymiar:</span>';
   let dims=[['camp','Kampania'],['adset','AdSet'],['strat','Strategia']].concat(detectTagDims().map(d=>[d.key,d.label]));
   if(isRaw&&chrt.type==='bar')dims=[['date','Data']].concat(dims);
   const dimAct=k=>{if(k==='date'||k==='yw'||k==='ym')return true;const v=new Set();for(const r of rows){const x=dimValue(r,k);if(x&&x!=='(brak)')v.add(x);if(v.size>=2)break;}return v.size>=2;};
   if(!dimAct(chrt.by)){const f=dims.find(d=>dimAct(d[0]));if(f)chrt.by=f[0];}
-  const gS='font-family:inherit;font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:#f4f1ec;color:#c2bcb0;cursor:not-allowed';
-  dims.forEach(d=>{if(dimAct(d[0]))h+=btn(chrt.by===d[0],`chrt.by='${d[0]}';draw()`,d[1]);else h+=`<button style="${gS}" disabled title="Brak danych w tym widoku">${d[1]}</button>`;});
-  if(isRaw&&chrt.type!=='bar'){h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Oś czasu (X):</span>';[['yw','Tydzień'],['ym','Miesiąc'],['date','Dzień']].forEach(t=>h+=btn(chrt.x===t[0],`chrt.x='${t[0]}';draw()`,t[1]));}
-  if(isRaw&&chrt.type!=='bar'){h+='<span style="font-size:10px;color:var(--muted);margin-left:8px">Nakładka:</span>';[['none','—'],['roas','ROAS'],['cpa','CPA']].forEach(o=>h+=btn(chrt.ov===o[0],`chrt.ov='${o[0]}';draw()`,o[1]));}
+  dims.forEach(d=>{if(dimAct(d[0]))h+=btn(chrt.by===d[0],`chrt.by='${d[0]}';draw()`,d[1]);else h+=`<button class="cbtn dis" disabled title="Brak danych w tym widoku">${d[1]}</button>`;});
+  if(isRaw&&chrt.type!=='bar'){h+='<span class="clbl">Oś czasu (X):</span>';[['yw','Tydzień'],['ym','Miesiąc'],['date','Dzień']].forEach(t=>h+=btn(chrt.x===t[0],`chrt.x='${t[0]}';draw()`,t[1]));}
+  if(isRaw&&chrt.type!=='bar'){h+='<span class="clbl">Nakładka:</span>';[['none','—'],['roas','ROAS'],['cpa','CPA']].forEach(o=>h+=btn(chrt.ov===o[0],`chrt.ov='${o[0]}';draw()`,o[1]));}
  }
  h+='</div>';
  if(chrt.vis){
@@ -296,15 +512,15 @@ function chartPanel(rows,isRaw){
   if(chrt.type==='stack')hint='100% stacked: oś X = czas, każdy słupek = 100% udziału, kolory = wartości wymiaru — pokazuje jak zmieniał się MIX w czasie.';
   else if(chrt.type==='trend')hint='Trend: wartość bezwzględna metryki w czasie, linia per wartość wymiaru (top 7 + Pozostałe).';
   else hint='Słupki posortowane malejąco. Wymiar tagów rozpoznany automatycznie z naming convention [K:V].';
-  h+=`<div style="padding:10px 18px;border-bottom:1px solid var(--border);background:#fafaf8">${body}<div style="font-size:9.5px;color:var(--muted);margin-top:6px">${hint}</div></div>`;
+  h+=`<div style="padding:16px 22px 14px;border-bottom:1px solid var(--border);background:var(--surface2)">${body}<div style="font-size:10px;color:var(--muted);margin-top:9px">${hint}</div></div>`;
  }
  return h;
 }
 
 function filterBar(total,shown){
- return `<div style="padding:7px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:#fdfbf9">
+ return `<div style="padding:7px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--surface2)">
   <span style="font-size:13px">🔍</span>
-  <input id="flt-inp" value="${flt.replace(/"/g,'&quot;')}" oninput="flt=this.value;srt={k:null,d:1};draw()" placeholder="Filtruj wiersze…" style="border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;width:230px;outline:none" onfocus="this.style.borderColor='#e85d5d'" onblur="this.style.borderColor=''">
+  <input id="flt-inp" value="${flt.replace(/"/g,'&quot;')}" oninput="flt=this.value;srt={k:null,d:1};draw()" placeholder="Filtruj wiersze…" class="flt-inp">
   ${flt?`<button onclick="flt='';srt={k:null,d:1};draw()" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--muted)">✕</button>`:''}
   <span style="font-size:10px;color:var(--muted)">${shown<total?`${shown} z ${total} wierszy`:total+' wierszy'}</span>
  </div>`;
@@ -318,7 +534,7 @@ function rawTable(rows,title){
  h+=filterBar(rows.length,fr.length);
  h+=chartPanel(fr,true);
  h+=`<div class="tbl-scroll"><table class="dt"><thead><tr>`;
- h+=cols.map(c=>{const s=srt.k===c[0];return`<th class="${c[2]||''}" onclick="sortBy('${c[0]}')" style="cursor:pointer${s?';color:#e85d5d':''}">${c[1]}${s?(srt.d===1?' ▲':' ▼'):''}</th>`;}).join('')+'</tr></thead><tbody>';
+ h+=cols.map(c=>{const s=srt.k===c[0];return`<th class="${c[2]||''}" onclick="sortBy('${c[0]}')" style="cursor:pointer${s?';color:var(--coral)':''}">${c[1]}${s?(srt.d===1?' ▲':' ▼'):''}</th>`;}).join('')+'</tr></thead><tbody>';
  fr.slice(0,4000).forEach(r=>{h+='<tr>'+cols.map(c=>{let v=r[c[0]];const lf=c[2]==='l';
    if(['cost','val'].includes(c[0]))v=fZ(v);else if(typeof v==='number')v=fN(v);
    return`<td class="${lf?'l':''}" ${lf?`title="${String(r[c[0]]||'')}"`:''}>${lf&&String(r[c[0]]||'').length>30?String(r[c[0]]).replace(/[\[\]]/g,' ').slice(0,30):v}</td>`;}).join('')+'</tr>';});
@@ -368,11 +584,11 @@ function rollupTable(rows,nameLabel,title){
  h+=filterBar(rows.length,fr.length);
  h+=chartPanel(fr.map(r=>({_k:r[nameKey],...r})),false);
  h+=`<div class="tbl-scroll"><table class="dt"><thead><tr>`;
- h+=cols.map(c=>{const s=srt.k===c[0];return`<th class="${c[2]==='l'?'l':''}" onclick="sortBy('${c[0]}')" style="cursor:pointer${s?';color:#e85d5d':''}">${c[1]}${s?(srt.d===1?' ▲':' ▼'):''}</th>`;}).join('')+'</tr></thead><tbody>';
+ h+=cols.map(c=>{const s=srt.k===c[0];return`<th class="${c[2]==='l'?'l':''}" onclick="sortBy('${c[0]}')" style="cursor:pointer${s?';color:var(--coral)':''}">${c[1]}${s?(srt.d===1?' ▲':' ▼'):''}</th>`;}).join('')+'</tr></thead><tbody>';
  fr.forEach(r=>{const nm=r[nameKey];
    h+='<tr>'+cols.map(c=>{const k=c[0];let v;
      if(k==='name')return`<td class="l" title="${String(nm||'')}">${String(nm||'').replace(/[\[\]]/g,' ').slice(0,48)}</td>`;
-     if(k==='sig'){const sg=auditSignals(r);if(!sg.length)return '<td class="l"><span class="st-ok" style="font-size:9px">✓ OK</span></td>';const chips=sg.map(x=>`<a class="cell-lnk" style="color:#c0392b" onclick="gotoCheck(${x[1]})" title="Skok do pozycji checklisty #${x[1]+1} (anomalia w danych)">⚠ ${x[0]}</a>`).join('<br>');return`<td class="l" style="font-weight:600;line-height:1.5">${chips}</td>`;}
+     if(k==='sig'){const sg=auditSignals(r);if(!sg.length)return '<td class="l"><span class="st-ok" style="font-size:9px">✓ OK</span></td>';const chips=sg.map(x=>`<a class="cell-lnk" style="color:var(--coral)" onclick="gotoCheck(${x[1]})" title="Skok do pozycji checklisty #${x[1]+1} (anomalia w danych)">⚠ ${x[0]}</a>`).join('<br>');return`<td class="l" style="font-weight:600;line-height:1.5">${chips}</td>`;}
      v=r[k];
      if(['cost','val'].includes(k))v=fN(v)+' zł';
      else if(k==='spshare'||k==='ctr'||k==='crpc')v=fP(v);
@@ -410,12 +626,12 @@ function svgLine(series,label,unit){
  const py=v=>PT+(1-v/maxY)*(H-PT-PB);
  let pts=series.map((p,i)=>`${px(i).toFixed(1)},${py(p.y).toFixed(1)}`).join(' ');
  let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;max-width:${W}px;height:auto;display:block;margin:0 auto">`;
- [0,.5,1].forEach(g=>{const y=PT+(1-g)*(H-PT-PB);s+=`<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="#eee"/><text x="4" y="${y+3}" font-size="9" fill="#aaa">${fN(maxY*g)}</text>`;});
- s+=`<polyline points="${pts}" fill="none" stroke="#e85d5d" stroke-width="2"/>`;
- series.forEach((p,i)=>{s+=`<circle cx="${px(i).toFixed(1)}" cy="${py(p.y).toFixed(1)}" r="2.6" fill="#e85d5d"><title>${p.x}: ${p.y.toFixed(2)}${unit||''}</title></circle>`;});
- series.forEach((p,i)=>{if(i%Math.ceil(n/8||1)===0||i===n-1)s+=`<text x="${px(i).toFixed(1)}" y="${H-8}" font-size="8" fill="#999" text-anchor="middle">${String(p.x).slice(5)}</text>`;});
+ [0,.5,1].forEach(g=>{const y=PT+(1-g)*(H-PT-PB);s+=`<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="rgba(255,255,255,.1)"/><text x="4" y="${y+3}" font-size="9.5" fill="#8e96b5">${fN(maxY*g)}</text>`;});
+ s+=`<polyline points="${pts}" fill="none" stroke="var(--coral)" stroke-width="2"/>`;
+ series.forEach((p,i)=>{s+=`<circle cx="${px(i).toFixed(1)}" cy="${py(p.y).toFixed(1)}" r="2.6" fill="var(--coral)"><title>${p.x}: ${p.y.toFixed(2)}${unit||''}</title></circle>`;});
+ series.forEach((p,i)=>{if(i%Math.ceil(n/8||1)===0||i===n-1)s+=`<text x="${px(i).toFixed(1)}" y="${H-8}" font-size="9.5" fill="#8e96b5" text-anchor="middle">${String(p.x).slice(5)}</text>`;});
  s+='</svg>';
- return `<div style="padding:10px 18px;border-bottom:1px solid var(--border);background:#fafaf8"><div style="font-size:11px;font-weight:600;color:var(--mid);margin-bottom:4px">${label}</div>${s}</div>`;
+ return `<div style="padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface2)"><div style="font-size:11px;font-weight:600;color:var(--mid);margin-bottom:4px">${label}</div>${s}</div>`;
 }
 // ===== Diagnostyka (v2) — step-scan d/d + pęknięcie lejka + manual-check =====
 function totalDiag(){
@@ -450,7 +666,7 @@ function totalDiag(){
  h+=`<div class="card attr-card"><div class="card-hdr"><div><span class="card-ttl">🪜 Gdzie pęka lejek — TM vs LM</span><div class="sub" style="margin-top:3px">Spadek na początku lejka = jakość ruchu (delivery); na końcu = strona / checkout / tracking. Napraw przyczynę — objaw zniknie sam.</div></div></div>`;
  h+='<div class="tbl-scroll" style="max-height:none"><table class="dt"><thead><tr><th class="l">Krok</th><th>TM</th><th>LM</th><th>Δ %</th><th class="l">Gdy spada → patrz</th></tr></thead><tbody>';
  rows.forEach(r=>{const w=worst&&r.lbl===worst.lbl&&r.d!=null&&r.d<-0.1;
-  h+=`<tr${w?' style="background:#fdf3f3"':''}><td class="l" style="font-weight:600">${r.lbl}${w?' 🔴':''}</td><td>${fP(r.a)}</td><td>${fP(r.b)}</td><td class="${r.d==null?'':(r.d>=0?'pos':'neg')}">${pmDelta(r.d)}</td><td class="l" style="color:var(--mid)">${r.who}</td></tr>`;});
+  h+=`<tr${w?' style="background:rgba(255,102,102,.08)"':''}><td class="l" style="font-weight:600">${r.lbl}${w?' 🔴':''}</td><td>${fP(r.a)}</td><td>${fP(r.b)}</td><td class="${r.d==null?'':(r.d>=0?'pos':'neg')}">${pmDelta(r.d)}</td><td class="l" style="color:var(--mid)">${r.who}</td></tr>`;});
  h+='</tbody></table></div></div>';
  const man=CHECK.map((c,i)=>({c,i})).filter(x=>x.c[0]==='MANUAL');
  if(man.length){
@@ -474,7 +690,7 @@ function attrBlock(){
  wins.forEach(w=>h+=`<th class="win" style="${w===ATTR_MODE?'color:var(--coral)':''}">${ATTR_LABELS[w]}${w===ATTR_MODE?' ✓':''}</th>`);
  h+='</tr></thead><tbody>';
  rows.forEach(([lbl,k,fmt])=>{h+=`<tr><td class="l" style="font-weight:600">${lbl}</td>`;
-  wins.forEach(w=>{if(!T[w]){h+=`<td style="border-left:1px solid var(--border);color:#bbb">—</td>`;return;}const cl=(k==='roas')?colRoas(T[w].roas):'';h+=`<td class="${cl}" style="border-left:1px solid var(--border);${w===ATTR_MODE?'background:#fff5f5':''}">${fmt(T[w][k])}</td>`;});
+  wins.forEach(w=>{if(!T[w]){h+=`<td style="border-left:1px solid var(--border);color:#bbb">—</td>`;return;}const cl=(k==='roas')?colRoas(T[w].roas):'';h+=`<td class="${cl}" style="border-left:1px solid var(--border);${w===ATTR_MODE?'background:rgba(255,102,102,.09)':''}">${fmt(T[w][k])}</td>`;});
   h+='</tr>';});
  h+='</tbody></table></div><div class="note">'+((T['1dc']&&T['7dc1dv'])?('Różnica 1dc → 7dc+1dv pokazuje wpływ atrybucji: zakupy '+fN(T['1dc'].pur)+' → '+fN(T['7dc1dv'].pur)+' (×'+(T['1dc'].pur?(T['7dc1dv'].pur/T['1dc'].pur).toFixed(1):'–')+'), ROAS '+T['1dc'].roas.toFixed(2)+' → '+T['7dc1dv'].roas.toFixed(2)+'. Koszt identyczny — atrybucja nie zmienia wydatku, tylko przypisanie konwersji.'):'Pobrane jedno okno (domyślne konta). Porównanie okien atrybucji jest opcjonalne — wymaga pull per okno (Dataslayer/Supermetrics), patrz DEPLOY.md.')+'</div></div>';
  return h;
@@ -684,7 +900,7 @@ function brkRawTab(type){
  const W=brkWindow(type), lab=lab0;
  let h='';
  if(type==='placement'){const fq=BREAKDOWNS.freq.frequency;
-  h+=`<div class="card attr-card"><div class="note" style="background:${fq>FREQ_T?'#fdecea':'#eafaf1'};color:${fq>FREQ_T?'#c0392b':'#16794a'};font-weight:600;padding:11px 18px">Frequency (account-level, reach dedup ${fN(BREAKDOWNS.freq.reach)}): <b>${fq.toFixed(2)}</b> ${fq>FREQ_T?'🔴 powyżej progu ≤4 — zmęczenie (odśwież kreacje / poszerz audience).':'✅ w normie (≤4).'}</div></div>`;}
+  h+=`<div class="card attr-card"><div class="note" style="background:${fq>FREQ_T?'rgba(255,102,102,.14)':'rgba(74,222,128,.12)'};color:${fq>FREQ_T?'#ff8e8e':'#4ade80'};font-weight:600;padding:11px 18px">Frequency (account-level, reach dedup ${fN(BREAKDOWNS.freq.reach)}): <b>${fq.toFixed(2)}</b> ${fq>FREQ_T?'🔴 powyżej progu ≤4 — zmęczenie (odśwież kreacje / poszerz audience).':'✅ w normie (≤4).'}</div></div>`;}
  h+=rawTable(decodeRaw(W.craw,W.lut), `${lab} — RAW (dzień × segment · atrybucja domyślna konta)`);
  h+=`<div class="note"><b>Schemat 1:1 z FBA-RAW</b> — segment w kolumnie „Kampania"; wykres grupuj po „Kampania" = po segmencie. Środek lejka (Outbound/LP/Content/ATC/Checkout/AddPay) = 0: Meta API nie zwraca go w breakdownach. Atrybucja domyślna konta (nie per okno). Źródło: Meta breakdowns ${type==='placement'?'publisher_platform':'age'} · 2026-06-09. TOTAL po segmencie: zakładka 📊 Arkusz → ∑ TOTAL ${lab}.</div>`;
  return h;
