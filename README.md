@@ -2,6 +2,10 @@
 
 **One self-contained HTML dashboard for a Meta Ads account: a 45-item Paid Social checklist, an editable spreadsheet where every number is a live formula, anti-anchoring diagnostics, and human instructions for everything the API can't see.**
 
+![downloads](https://img.shields.io/github/downloads/radxlav/meta-ads-verification-opensource-by-rado-kmita/total) ![stars](https://img.shields.io/github/stars/radxlav/meta-ads-verification-opensource-by-rado-kmita)
+
+**[⬇ Download the ZIP (latest release)](https://github.com/radxlav/meta-ads-verification-opensource-by-rado-kmita/releases/latest)**
+
 Free, MIT-licensed. Built by [Radosław Kmita](https://www.linkedin.com/in/radoslawkmita/) + Hubert (Paid Social) at MTA Digital.
 
 ![what you get](#) <!-- optional: drop a screenshot here -->
